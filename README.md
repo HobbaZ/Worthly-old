@@ -1,14 +1,13 @@
 # README TEMPLATE
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://choosealicense.com/licenses/mit/)
-![License](https://img.shields.io/badge/Made%20with-Markdown-darkgreen.svg)
-[![Github Commits](https://img.shields.io/github/commit-activity/w/HobbaZ/README-template)](https://github.com/HobbaZ/README-template/commits)
-[![GitHub latest commit](https://img.shields.io/github/last-commit/HobbaZ/README-template)](https://github.com/HobbaZ/README-template/branches)
+[![Github Commits](https://img.shields.io/github/commit-activity/w/HobbaZ/Project-3-Final-Project)](https://github.com/HobbaZ/Project-3-Final-Project/commits)
+[![GitHub latest commit](https://img.shields.io/github/last-commit/HobbaZ/Project-3-Final-Project)](https://github.com/HobbaZ/Project-3-Final-Project/branches)
 [![GitHub followers](https://img.shields.io/github/followers/HobbaZ.svg)]()
-![GitHub repo size](https://img.shields.io/github/repo-size/HobbaZ/README-template)
-[![GitHub issues](https://img.shields.io/github/issues/HobbaZ/README-template)](https://img.shields.io/github/issues/HobbaZ/README-template)
-![GitHub forks](https://img.shields.io/github/forks/HobbaZ/README-template)
-![GitHub language count](https://img.shields.io/github/languages/count/HobbaZ/README-template)
+![GitHub repo size](https://img.shields.io/github/repo-size/HobbaZ/Project-3-Final-Project)
+[![GitHub issues](https://img.shields.io/github/issues/HobbaZ/Project-3-Final-Project)](https://img.shields.io/github/issues/HobbaZ/Project-3-Final-Project)
+![GitHub forks](https://img.shields.io/github/forks/HobbaZ/Project-3-Final-Project)
+![GitHub language count](https://img.shields.io/github/languages/count/HobbaZ/Project-3-Final-Project)
 
 ## Description
 ### Project Aim ###
@@ -20,7 +19,7 @@ Project 3
 Put what skills you learnt or advanced upon here.
 
 ## Deployment
-You can view the on Heroku here. 
+
 
 
 ## Table of Contents
@@ -72,6 +71,8 @@ You can also contribute by opening a pull request or submitting an issue.
 [MERN stack Tutorial](https://www.mongodb.com/languages/mern-stack-tutorial)
 [React and Express Tutorial](https://www.freecodecamp.org/news/create-a-react-frontend-a-node-express-backend-and-connect-them-together-c5798926047c/)
 [Deploy React to Heroku](https://www.freecodecamp.org/news/deploying-a-mern-application-using-mongodb-atlas-to-heroku/)
+[Create SPA React app Tutorial](https://www.kirupa.com/react/creating_single_page_app_react_using_react_router.htm)
+[React Contact Form](https://mailtrap.io/blog/react-contact-form/)
 
 ## Testing
 List any unit tests you've created for your project here
