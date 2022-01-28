@@ -23,3 +23,75 @@ export const ADD_USER = gql`
     }
   }
 `;
+
+export const SAVE_ITEM = gql`
+mutation saveItem($itemId: String!) {
+  saveItem(itemId: $itemId) {
+      _id
+      username
+      email
+      savedItems{ 
+                  itemId
+                  itemName
+                  description
+                  itemImages
+                  saleQuantity
+                  postLinks
+                  purchssePrice
+                  quantity
+                  averageSellingPrice
+                  highestSellingPrice
+                  lowestSellingPrice
+
+                  title }
+  }
+}
+`;
+
+export const EDIT_ITEM = gql`
+mutation editItem($itemId: String!) {
+  editItem(itemId: $itemId) {
+      _id
+      username
+      email
+      savedItems{ 
+                  itemId
+                  itemName
+                  description
+                  itemImages
+                  saleQuantity
+                  postLinks
+                  purchssePrice
+                  quantity
+                  averageSellingPrice
+                  highestSellingPrice
+                  lowestSellingPrice
+
+                  title }
+  }
+}
+`;
+
+export const DELETE_ITEM = gql`
+  mutation deleteItem($itemId: String!) {
+    deleteItem(itemId: $itemId) {
+        _id
+        username
+        email
+        savedItems{ 
+                    itemId
+                    itemName
+                    description
+                    itemImages
+                    saleQuantity
+                    postLinks
+                    purchssePrice
+                    quantity
+                    averageSellingPrice
+                    highestSellingPrice
+                    lowestSellingPrice
+
+                    title }
+    }
+  }
+`;

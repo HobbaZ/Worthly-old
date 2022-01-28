@@ -39,8 +39,53 @@ const resolvers = {
 
       return { token, user };
     },
-    
-  },
+
+    //Save item if logged in
+    updateItem: async (parent, args, context) => {
+      if (context.user) {
+        return await User.findOneAndUpdate(
+            {_id: context.User._id},
+            {$push: { savedBooks: args}},
+            { new: true})
+            .then (result => {
+                return{result}
+            })
+            .catch (err => {
+                console.error(err)
+            })
+    }
+    throw new AuthenticationError('Please login to add a book!');
+    },
+
+    //update item if logged in
+    saveItem: async (parent, args, context) => {
+      if (context.user) {
+        return await User.findOneAndUpdate(
+            {_id: context.User._id},
+            {$push: { savedBooks: args}},
+            { new: true})
+            .then (result => {
+                return{result}
+            })
+            .catch (err => {
+                console.error(err)
+            })
+    }
+    throw new AuthenticationError('Please login to add a book!');
+    },
+
+    // Delete item if logged in
+    deleteItem: async (parent, {bookId}, context) => {
+      if (context.user) {
+      const user = await User.findOneAndUpdate(
+          { _id: context.user._id},
+          {$pull: { savedItems: {itemId}}},
+          { new: true});
+          return user;      
+  }
+  throw new AuthenticationError('Please login to delete a book!');
+ },  
+},
 };
 
 module.exports = resolvers;

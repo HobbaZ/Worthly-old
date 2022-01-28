@@ -32,9 +32,6 @@ const authLink = setContext((_, { headers }) => {
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  fetchOptions: {
-    credentials: 'include'
-  },
   cache: new InMemoryCache(),
 });
 
@@ -51,6 +48,7 @@ function App() {
             <Route exact path="/signup"><Signup /></Route>
 
             <Route exact path="/me"><Profile /></Route>
+            {/*Maybe add a popular/trending sales page*/}
 
           </div>
           <Footer />

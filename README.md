@@ -11,16 +11,15 @@
 
 ## Description
 ### Project Aim ###
-Project 3
+Keeping track of your interesting and collectable things can be a challenge. What search term did I use? What was the price some months ago? Is the price the real selling price or the seller wanted sale price? In comes app name, where you can search for your item and see the highest, lowest and average real sale price over a period of time.
 
 ### What Problem Does It Solve ###
 
 ### What I Learnt ###
-Put what skills you learnt or advanced upon here.
+
 
 ## Deployment
-
-
+You can view the [website link](HobbaZ/Project-3-Final-Project) running on Heroku here. 
 
 ## Table of Contents
 - [Description](#description)
@@ -46,11 +45,32 @@ Repeat WHEN and THEN until all major project needs have been defined
 
 ## Screenshots
 
+Site homepage
+![]()
+
+Example profile
+![]()
+
+Creating an item
+![]()
+
 ## Installation
-You will need: 
-Github, VS Code, Gitbash
+
+1. Clone the repo to your computer by clicking the green code button and copying the SSH version.
+
+2. Open Gitbash in your desired folder and type ```git clone ``` then right click to paste the string and hit enter. The repo will then be cloned to your computer.
+
+3. Navigate to the repo folder and type ```code .``` into gitbash to open the repo in VS Code.
+
+4. Open a new Terminal in VS Code and type ```npm install``` to install the repo dependencies.
+
+5. Finally, type ```npm run develop``` into the terminal and navigate to localhost:3001 in your web browser.
 
 ## Features
+
+- Create and track your items
+- Edit your items
+- Upload photos of your items
 
 ## Technology
 
@@ -60,6 +80,7 @@ Github, VS Code, Gitbash
 - React
 - JWT
 - MongoDB
+- Styled Components
 
 ## Contributors
 [Zachary Hobba](https://github.com/HobbaZ)

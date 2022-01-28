@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node --max-http-header-size=20000 server.js",
+    "start": "node server.js",
     "watch": "nodemon",
     "seed": "node seeders/seed.js"
   },

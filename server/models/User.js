@@ -25,15 +25,15 @@ const userSchema = new Schema(
         minlength: 8,
       },
 
+    savedItems: [itemSchema],
+  },
+  // set this to use virtual below
+  {
+    toJSON: {
+      virtuals: true,
     },
-    {
-      toJSON: {
-        virtuals: true,
-        getters: true,
-      },
-      id: false,
-    }
-  );
+  }
+);
 
   
 // hash user password
@@ -50,7 +50,5 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
-  
-const User = model('user', userSchema);
 
 module.exports = User;

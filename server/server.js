@@ -10,7 +10,7 @@ const db = require('./config/connection');
 const http = require("http");
 console.log(`Max HTTP Header size is ${http.maxHeaderSize}`);
 
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 3001;
 const app = express();
 
 const server = new ApolloServer({
