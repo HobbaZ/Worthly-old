@@ -6,13 +6,13 @@ import {
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Profile from './pages/Profile';
-import Signup from './pages/Signup';
-import Login from './pages/Login';
-import Header from './components/Header';
+import SearchItems from './pages/SearchItems';
+import SavedItems from './pages/SavedItems';
 import Footer from './components/Footer';
+import AppNavBar from './components/NavBar';
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -40,17 +40,16 @@ function App() {
     <ApolloProvider client={client}>
     <Router>
         <div className="flex-column justify-flex-start min-100-vh">
-          <Header />
+          <AppNavBar/>
           <div className="container">
 
-            <Route exact path="/login"><Login /></Route>
-
-            <Route exact path="/signup"><Signup /></Route>
-
-            <Route exact path="/me"><Profile /></Route>
-            {/*Maybe add a popular/trending sales page*/}
-
-          </div>
+          <Switch>
+          <Route exact path='/' component={SearchItems} />
+          <Route exact path='/saved' component={SavedItems} />
+          <Route exact path='/profile' component={Profile} />
+          <Route render={() => <h1 className='display-2'>Wrong page!</h1>} />
+        </Switch>
+        </div>
           <Footer />
         </div>
       </Router>

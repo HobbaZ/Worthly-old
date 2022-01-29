@@ -11,7 +11,7 @@ import { Form, Alert, Button } from 'react-bootstrap'; //migrate to Styled Compo
 const EditUserForm = () => {
 
     //Initial form state
-    //change values to curren5t username and email
+    //change values to current username and email
     const [editUserData, setEditUserData] = useState({ username: '', email: ''  });
 
     // set state for form validation

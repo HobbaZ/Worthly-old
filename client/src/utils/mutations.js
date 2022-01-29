@@ -42,8 +42,7 @@ mutation saveItem($itemId: String!) {
                   averageSellingPrice
                   highestSellingPrice
                   lowestSellingPrice
-
-                  title }
+                }
   }
 }
 `;
@@ -66,8 +65,7 @@ mutation editItem($itemId: String!) {
                   averageSellingPrice
                   highestSellingPrice
                   lowestSellingPrice
-
-                  title }
+                }
   }
 }
 `;
@@ -90,8 +88,7 @@ export const DELETE_ITEM = gql`
                     averageSellingPrice
                     highestSellingPrice
                     lowestSellingPrice
-
-                    title }
+                  }
     }
   }
 `;

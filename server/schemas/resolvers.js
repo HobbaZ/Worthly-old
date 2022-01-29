@@ -40,7 +40,7 @@ const resolvers = {
       return { token, user };
     },
 
-    //Save item if logged in
+    //Update item if logged in
     updateItem: async (parent, args, context) => {
       if (context.user) {
         return await User.findOneAndUpdate(
@@ -57,12 +57,12 @@ const resolvers = {
     throw new AuthenticationError('Please login to add a book!');
     },
 
-    //update item if logged in
+    //Save item if logged in
     saveItem: async (parent, args, context) => {
       if (context.user) {
         return await User.findOneAndUpdate(
             {_id: context.User._id},
-            {$push: { savedBooks: args}},
+            {$push: { savedItems: args}},
             { new: true})
             .then (result => {
                 return{result}
@@ -75,7 +75,7 @@ const resolvers = {
     },
 
     // Delete item if logged in
-    deleteItem: async (parent, {bookId}, context) => {
+    deleteItem: async (parent, {itemId}, context) => {
       if (context.user) {
       const user = await User.findOneAndUpdate(
           { _id: context.user._id},

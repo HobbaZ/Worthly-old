@@ -20,9 +20,41 @@ const typeDefs = gql`
     me: User
   }
 
+  type Item {
+    itemId: String,
+    description: String
+    itemImages: [String]
+    itemName: String
+    purchasePrice: Int
+    quantity: Int
+    saleQuantity: Int
+    postLinks: String
+    highestSellingPrice: Int
+    lowestSellingPrice: Int
+    averageSellingPrice: Int
+  }
+
+  input itemInput {
+    itemId: String,
+    description: String
+    itemImages: [String]
+    itemName: String
+    purchasePrice: Int
+    quantity: Int
+    saleQuantity: Int
+    postLinks: String
+    highestSellingPrice: Int
+    lowestSellingPrice: Int
+    averageSellingPrice: Int
+  }
+
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
+    updateUser(username: String!, email: String!): Auth
     login(email: String!, password: String!): Auth
+    saveItem(item: itemInput): User
+    deleteItem(itemId: String!): User 
+    updateItem(itemId: String!): User 
   }
 `;
 

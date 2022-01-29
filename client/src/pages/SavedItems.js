@@ -4,11 +4,11 @@ import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
 import { DELETE_ITEM } from '../utils/mutations';
 
-import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap'; //migrate to Styled Components
+import { Container, Card, Button, Jumbotron } from 'react-bootstrap'; //migrate to Styled Components
 
 import Auth from '../utils/auth';
 
-const savedItems = () => {
+const SavedItems = () => {
   const { loading, data } = useQuery(QUERY_ME);
   const userData = data?.me || [];
 
@@ -41,15 +41,14 @@ const savedItems = () => {
 
   return (
     <>
-      <Jumbotron fluid className='text-light bg-dark'>
+      <Jumbotron className='text-light bg-dark'>
         <Container>
           <h1>Your Stuff!</h1>
         </Container>
       </Jumbotron>
       <Container>
  
-        <CardColumns>
-          {userData.savedItems.map((item) => {
+          {userData.savedItems?.map((item) => {
             return (
               <Card key={item.itemId} border='dark'>
                 {item.itemImages ? <Card.Img src={item.itemImages} alt={`Image for ${item.itemName}`} variant='top' /> : null}
@@ -59,16 +58,15 @@ const savedItems = () => {
                   <p>Purchase Price: {item.purchasePrice}</p>
                   <p>Average Sale Price: {item.averageSellingPrice}</p>
                   <Button className='btn-block btn-danger' onClick={() => handleDeleteItem(item.itemId)}>
-                    Delete this item!
+                    Delete
                   </Button>
                 </Card.Body>
               </Card>
             );
           })}
-        </CardColumns>
       </Container>
     </>
   );
 };
 
-export default savedItems;
+export default SavedItems;

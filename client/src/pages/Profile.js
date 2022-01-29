@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
+import { Container } from 'react-bootstrap';
 
 import { QUERY_USER, QUERY_ME } from '../utils/queries';
 
@@ -13,10 +14,10 @@ const Profile = () => {
     variables: { username: userParam },
   });
 
-  const user = data?.me || data?.user || {};
+  const user = data?.me || {};
   // redirect to personal profile page if username is yours
   if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
-    return <Redirect to="/me" />;
+    return <Redirect to="/profile" />;
   }
 
   if (loading) {
@@ -29,13 +30,14 @@ const Profile = () => {
   }
 
   return (
-    <div>
-      <div className="flex-row justify-center mb-3">
+    <Container>
         <h2 className="col-12 col-md-10 bg-dark text-light p-3 mb-5">
-          {userParam ? `${user.username}'s` : 'your'} profile.
+          Viewing {userParam ? `${user.username}'s` : 'My'} Profile
         </h2>
 
         <div className="col-12 col-md-10 mb-5">
+          <p>Username: {user.username}</p>
+          <p>Email: {user.email}</p>
         </div>
         {!userParam && (
           <div
@@ -44,8 +46,7 @@ const Profile = () => {
           >
           </div>
         )}
-      </div>
-    </div>
+    </Container>
   );
 };
 
