@@ -88,12 +88,7 @@ Creating an item
 You can also contribute by opening a pull request or submitting an issue.
 
 ## Acknowledgements
-[GraphQL server tutorial](https://graphql.org/graphql-js/running-an-express-graphql-server/)
-[MERN stack Tutorial](https://www.mongodb.com/languages/mern-stack-tutorial)
-[React and Express Tutorial](https://www.freecodecamp.org/news/create-a-react-frontend-a-node-express-backend-and-connect-them-together-c5798926047c/)
-[Deploy React to Heroku](https://www.freecodecamp.org/news/deploying-a-mern-application-using-mongodb-atlas-to-heroku/)
-[Create SPA React app Tutorial](https://www.kirupa.com/react/creating_single_page_app_react_using_react_router.htm)
-[React Contact Form](https://mailtrap.io/blog/react-contact-form/)
+[](https://medium.com/serpapi/how-to-scrape-product-data-from-google-shopping-f1193abd5dc3)
 
 ## Testing
 List any unit tests you've created for your project here

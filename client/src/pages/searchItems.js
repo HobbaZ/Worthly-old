@@ -9,8 +9,49 @@ import { SAVE_ITEM } from '../utils/mutations';
 
 import { saveItemIds, getSavedItemIds } from '../utils/localStorage';
 
-const apiKey = process.env.API_KEY;
-const ebayApiRoute = process.env.EBAY_API;
+const apiKey = process.env.REACT_APP_API_KEY;
+
+
+//Use SerpApi ebay api
+const SerpApi = require('google-search-results-nodejs');
+const search = new SerpApi.GoogleSearch(apiKey);
+
+const params = {
+  engine: "ebay",
+  ebay_domain: "ebay.com.au",
+  _nkw: "Javascript Thau",
+};
+
+const callback = function(data) {
+
+  //Only get shipping price, not actual sale price or sold price
+  console.log(data['organic_results'])
+
+  let resultData = data['organic_results'];
+
+  //default image to show user
+  let image = data['organic_results'][0].thumbnail;
+  console.log(image)
+
+  let totalPrice = 0;
+
+  for (let index = 0; index < resultData.length; index++) {
+    let minusPostage = resultData[index].shipping.extracted - 9; //Guestimate of average postage
+    totalPrice = totalPrice +minusPostage;
+    //averagePrice = totalPrice/data['organic_results'].length;
+  }
+
+  let averagePrice = console.log("Average Price:", (totalPrice/resultData.length).toFixed(2))
+
+  return(console.log("Total price is", totalPrice));
+};
+
+ 
+
+// Show result as JSON
+search.json(params, callback);
+
+
 
 const SearchItemsForm = () => {
     // create state for holding returned eBay sold api data
@@ -38,20 +79,19 @@ const SearchItemsForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
+    const searchInput = "dogs";
+
     if (!searchInput) {
       return false;
     }
 
-      //third party API call here ebay api route with api key and add search query
+      //third party API call here serpapi api route with api key and add search query
     try {
-      const response = await fetch(`${ebayApiRoute}${searchInput}`);
+      const response = await fetch('https://serpapi.com/search.json?q=tv&tbm=shop&location=Dallas&hl=en&gl=us&api_key=');
 
-      if (!response.ok) {
-        console.log(response);
-        throw new Error('Error in linking to API!');
-      }
 
-      const { items } = await response.json();
+
+      /*const { items } = await response.json();
 
       const searchData = items.map((item) => ({ //replace volumeInfo.field with response fields from api call
         authors: item.volumeInfo.authors || ['No author to display'],
@@ -64,7 +104,7 @@ const SearchItemsForm = () => {
         itemImages: item.volumeInfo.imageLinks?.thumbnail || '',
       }));
 
-      setSearcheditems(searchData);
+      setSearcheditems(searchData);*/
       setSearchInput({
       //Reset all fields
       keywords: '',
@@ -102,9 +142,14 @@ const SearchItemsForm = () => {
 
 return (
     <>
-      <div fluid className='text-light bg-dark'>
+      <div className='text-light bg-dark'>
         <Container>
-          <h1>Item Search!</h1>
+          <h1>Search For Stuff!</h1>
+          <div>
+              <h3>Search Tips...</h3>
+              <p>Search for the item's brand and model number instead of vaguer search terms like colour and type of item</p>
+          </div>
+
           <Form onSubmit={handleFormSubmit}>
 
             {/*Keyword Searchbar*/}
