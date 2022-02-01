@@ -20,6 +20,7 @@ const params = {
   engine: "ebay",
   ebay_domain: "ebay.com.au",
   _nkw: "Javascript Thau",
+  _ipg: 200,
 };
 
 const callback = function(data) {
@@ -30,20 +31,20 @@ const callback = function(data) {
   let resultData = data['organic_results'];
 
   //default image to show user
-  let image = data['organic_results'][0].thumbnail;
+  let image = resultData[0].thumbnail;
   console.log(image)
 
   let totalPrice = 0;
+  let averagePrice = 0;
 
   for (let index = 0; index < resultData.length; index++) {
-    let minusPostage = resultData[index].shipping.extracted - 9; //Guestimate of average postage
-    totalPrice = totalPrice +minusPostage;
-    //averagePrice = totalPrice/data['organic_results'].length;
+    let priceMinusPostage = resultData[index].shipping.extracted - 9; //Guestimate of average postage
+    totalPrice = totalPrice+priceMinusPostage;
   }
 
-  let averagePrice = console.log("Average Price:", (totalPrice/resultData.length).toFixed(2))
+  averagePrice = (totalPrice/resultData.length).toFixed(2);
 
-  return(console.log("Total price is", totalPrice));
+  return(console.log(`Total price is: $${totalPrice.toFixed(2)}, Average price is: $${averagePrice}, image to use: ${image}`));
 };
 
  
@@ -79,15 +80,63 @@ const SearchItemsForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    const searchInput = "dogs";
-
     if (!searchInput) {
       return false;
     }
 
-      //third party API call here serpapi api route with api key and add search query
     try {
-      const response = await fetch('https://serpapi.com/search.json?q=tv&tbm=shop&location=Dallas&hl=en&gl=us&api_key=');
+
+    const search = new SerpApi.GoogleSearch(apiKey);
+
+    const params = {
+      engine: "ebay",
+      ebay_domain: "ebay.com.au",
+      _nkw: `${searchInput}`,
+      _ipg: 200,
+    };
+    
+    const callback = function(data) {
+    
+      //Only get shipping price, not actual sale price or sold price
+      console.log(data['organic_results'])
+    
+      let resultData = data['organic_results'];
+    
+      //default image to show user
+      let image = resultData[0].thumbnail;
+      console.log(image)
+    
+      let totalPrice = 0;
+      let averagePrice = 0;
+    
+      for (let index = 0; index < resultData.length; index++) {
+        let priceMinusPostage = resultData[index].price.extracted - 9; //Guestimate of average postage
+        totalPrice = totalPrice+priceMinusPostage;
+      }
+    
+      //Get average price by total Price / total number of records
+      averagePrice = (totalPrice/resultData.length).toFixed(2);
+    
+      return(console.log(`Total price is: $${totalPrice.toFixed(2)}, total items: ${resultData.length}, Average price is: $${averagePrice}, image to use: ${image}`));
+    };
+    
+    // Show result as JSON
+    search.json(params, callback)
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+      //third party API call here serpapi api route with api key and add search query
+
 
 
 
@@ -147,7 +196,7 @@ return (
           <h1>Search For Stuff!</h1>
           <div>
               <h3>Search Tips...</h3>
-              <p>Search for the item's brand and model number instead of vaguer search terms like colour and type of item</p>
+              <p>Search for the item's brand and model number instead of vague search terms like colour and type of item</p>
           </div>
 
           <Form onSubmit={handleFormSubmit}>
@@ -177,17 +226,6 @@ return (
             </Form.Group>
 
             <Form.Group>
-              <Form.Label htmlFor='category'>Category</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='item category'
-                name='category'
-                onChange={handleInputChange}
-                value={searchInput.category}
-              />
-            </Form.Group>
-
-            <Form.Group>
               <Form.Label htmlFor='keywords'>Keywords</Form.Label>
               <Form.Control
                 type='text'
@@ -199,7 +237,7 @@ return (
             </Form.Group>
 
             <Button
-              disabled={!(searchInput.keywords || searchInput.category || searchInput.itemName || searchInput.year)}
+              disabled={!(searchInput.keywords || searchInput.itemName || searchInput.year)}
               type='submit'
               variant='success'>
               Submit
