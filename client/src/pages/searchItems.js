@@ -11,51 +11,15 @@ import { saveItemIds, getSavedItemIds } from '../utils/localStorage';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
+//Generate unique ids with crypto
+const crypto = require("crypto");
+const id = crypto.randomBytes(16).toString("hex");
 
 //Use SerpApi ebay api
 const SerpApi = require('google-search-results-nodejs');
-const search = new SerpApi.GoogleSearch(apiKey);
-
-const params = {
-  engine: "ebay",
-  ebay_domain: "ebay.com.au",
-  _nkw: "Javascript Thau",
-  _ipg: 200,
-};
-
-const callback = function(data) {
-
-  //Only get shipping price, not actual sale price or sold price
-  console.log(data['organic_results'])
-
-  let resultData = data['organic_results'];
-
-  //default image to show user
-  let image = resultData[0].thumbnail;
-  console.log(image)
-
-  let totalPrice = 0;
-  let averagePrice = 0;
-
-  for (let index = 0; index < resultData.length; index++) {
-    let priceMinusPostage = resultData[index].shipping.extracted - 9; //Guestimate of average postage
-    totalPrice = totalPrice+priceMinusPostage;
-  }
-
-  averagePrice = (totalPrice/resultData.length).toFixed(2);
-
-  return(console.log(`Total price is: $${totalPrice.toFixed(2)}, Average price is: $${averagePrice}, image to use: ${image}`));
-};
-
- 
-
-// Show result as JSON
-search.json(params, callback);
-
-
 
 const SearchItemsForm = () => {
-    // create state for holding returned eBay sold api data
+    // create state for holding returned eBay api data
     const [searchedItems, setSearcheditems] = useState([]);
     // create state for holding our search field data
     const [searchInput, setSearchInput] = useState({keywords: '', category: '', year: '', itemName: '' });
@@ -82,78 +46,51 @@ const SearchItemsForm = () => {
 
     if (!searchInput) {
       return false;
-    }
-
-    try {
+    } else {
 
     const search = new SerpApi.GoogleSearch(apiKey);
 
-    const params = {
-      engine: "ebay",
-      ebay_domain: "ebay.com.au",
-      _nkw: `${searchInput}`,
-      _ipg: 200,
-    };
-    
-    const callback = function(data) {
-    
-      //Only get shipping price, not actual sale price or sold price
-      console.log(data['organic_results'])
-    
-      let resultData = data['organic_results'];
-    
-      //default image to show user
-      let image = resultData[0].thumbnail;
-      console.log(image)
-    
-      let totalPrice = 0;
-      let averagePrice = 0;
-    
-      for (let index = 0; index < resultData.length; index++) {
-        let priceMinusPostage = resultData[index].price.extracted - 9; //Guestimate of average postage
-        totalPrice = totalPrice+priceMinusPostage;
+    try {
+      const response = await fetch(`https://serpapi.com/search?engine=ebay&ebay_domain=ebay.com.au&_nkw=${searchInput}&source=nodejs&output=json&api_key=${apiKey}`)
+
+      if (!response.ok) {
+        console.log(response);
+        throw new Error('something went wrong!');
       }
+
+    if (!search) {
+      console.log('Error occured trying to search');
+    }
     
-      //Get average price by total Price / total number of records
-      averagePrice = (totalPrice/resultData.length).toFixed(2);
-    
-      return(console.log(`Total price is: $${totalPrice.toFixed(2)}, total items: ${resultData.length}, Average price is: $${averagePrice}, image to use: ${image}`));
-    };
-    
-    // Show result as JSON
-    search.json(params, callback)
-  
-    
+    //Has to match the name of one of the arrays in the response or it won't work
+    const { organic_results } = await response.json();
 
+    //find total price by adding all prices from the found records
+    const averagePrice = () => {
 
+    let total = 0;
+    let average = 0;
 
+    for (let index = 0; index < organic_results.length; index++) {
+      let priceMinusPostage = organic_results[index].price.extracted - 9; //Guestimate of average postage
+      total = total+priceMinusPostage;
+    }
 
+    average = (total/organic_results.length).toFixed(2);
+    return (average);
+    }
 
+    const searchData = () => ({
+      itemName: organic_results[0].title,
+      itemId: id,
+      quantity: organic_results.length,
+      itemImages: organic_results[0].thumbnail || [],
+      price: averagePrice(),
 
+    })
 
+    setSearcheditems(searchData);
 
-
-
-
-      //third party API call here serpapi api route with api key and add search query
-
-
-
-
-      /*const { items } = await response.json();
-
-      const searchData = items.map((item) => ({ //replace volumeInfo.field with response fields from api call
-        authors: item.volumeInfo.authors || ['No author to display'],
-        itemName: item.volumeInfo.title,
-        saleQuantity: item.volumeInfo.description, //number of sales over a time period
-        description: item.volumeInfo.description,
-        postLinks: item.volumeInfo.description,
-        highestSellingPrice: item.volumeInfo.description,
-        lowestSellingPrice: item.volumeInfo.description,
-        itemImages: item.volumeInfo.imageLinks?.thumbnail || '',
-      }));
-
-      setSearcheditems(searchData);*/
       setSearchInput({
       //Reset all fields
       keywords: '',
@@ -164,9 +101,10 @@ const SearchItemsForm = () => {
     } catch (err) {
       console.error(err);
     }
+  }
   };
 
-  const handleSavedItem = async (itemId) => {
+  const handleSaveItem = async (itemId) => {
 
     const itemToSave = searchedItems.find((item) => item.itemId === itemId);
 
@@ -246,31 +184,39 @@ return (
         </Container>
       </div>
 
+      {/* Results container */}
       <Container>
         <div>
-          {searchedItems.map((item) => {
-            return (
-              <Card key={item.itemId} border='dark'>
-                {item.image ? (
-                  <Card.Img src={item.image} alt={`Photo for ${item.title}`} variant='top' />
+        <h2>
+          {searchedItems.quantity
+            ? `${searchInput} / ${searchedItems.quantity} results`
+            : 'Search for an item to begin'}
+        </h2>
+
+        <p>{searchedItems.itemName}</p>
+
+        <div>  
+        {searchedItems.itemImages ? (
+                  <img src={searchedItems.itemImages} alt={`The default for ${searchInput}`} variant='top' />
                 ) : null}
-                <Card.Body>
-                <Card.Title>{item.itemName}</Card.Title>
-                <p>Description: {item.description}</p>
-                  {Auth.loggedIn() && (
+        </div>
+
+        <p>
+        {searchedItems.price
+            ? `Estimated Sale Price (excl. postage): $${searchedItems.price}`
+            : null}
+        </p>
+
+        {Auth.loggedIn() && (
                     <Button
-                      disabled={savedItemIds?.some((saveditemId) => saveditemId === item.itemId)}
+                      disabled={savedItemIds?.some((savedItemId) => savedItemId === itemId)}
                       className='btn-block btn-info'
-                      onClick={() => handleSavedItem(item.itemId)}>
-                      {savedItemIds?.some((saveditemId) => saveditemId === item.itemId)
-                        ? 'This item has already been saved!'
-                        : 'Save this item!'}
+                      onClick={() => handleSaveItem(itemId)}>
+                      {savedItemIds?.some((savedItemId) => savedItemId === itemId)
+                        ? 'Already added!'
+                        : 'Tracking'}
                     </Button>
-                  )}
-                </Card.Body>
-              </Card>
-            );
-          })}
+        )}
         </div>
       </Container>
     </>

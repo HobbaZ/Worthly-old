@@ -26,5 +26,6 @@
   "homepage": "https://github.com/HobbaZ/Project-3-Final-Project#readme",
   "devDependencies": {
     "concurrently": "^7.0.0"
-  }
+  },
+  "dependencies": {}
 }
