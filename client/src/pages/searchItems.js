@@ -20,9 +20,9 @@ const SerpApi = require('google-search-results-nodejs');
 
 const SearchItemsForm = () => {
     // create state for holding returned eBay api data
-    const [searchedItems, setSearcheditems] = useState([]);
+    const [searchedItems, setSearcheditems] = useState({});
     // create state for holding our search field data
-    const [searchInput, setSearchInput] = useState({keywords: '', category: '', year: '' });
+    const [searchInput, setSearchInput] = useState({keywords: '', itemName: '', year: ''});
   
     // create state to hold saved itemId values
     const [savedItemIds, setsavedItemIds] = useState(getSavedItemIds());
@@ -35,7 +35,7 @@ const SearchItemsForm = () => {
       return () => saveItemIds(savedItemIds);
     });
 
-    const handleInputChange = (event) => {
+    const handleInputChange = event => {
         const { name, value } = event.target;
         setSearchInput({ ...searchInput, [name]: value });
       };
@@ -67,7 +67,6 @@ const SearchItemsForm = () => {
 
     //find total price by adding all prices from the found records
     const averagePrice = () => {
-
     let total = 0;
     let average = 0;
 
@@ -80,13 +79,22 @@ const SearchItemsForm = () => {
     return (average);
     }
 
+    const percentage = (purchase, ave) => {
+      purchase = 46;
+      ave = averagePrice()
+
+      let percent = ((ave/purchase)*100).toFixed(1);
+        return (percent)
+    };
+
     const searchData = () => ({
       itemName: organic_results[0].title,
       itemId: id,
       quantity: organic_results.length,
       itemImages: organic_results[0].thumbnail || [],
       price: averagePrice(),
-
+      purchasePrice: 20,
+      percent: percentage(),
     })
 
     setSearcheditems(searchData);
@@ -96,7 +104,6 @@ const SearchItemsForm = () => {
       keywords: '',
       year: '',
       itemName: '',
-      category: '',
     });
     } catch (err) {
       console.error(err);
@@ -106,10 +113,11 @@ const SearchItemsForm = () => {
 
   const handleSaveItem = async () => {
 
-    const itemToSave = searchedItems.item.itemId;
+    console.log(searchedItems)
+    const itemToSave = {...searchedItems};
 
     // get token
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
+    const token = Auth.loggedIn() ? Auth.getToken() : 'No Token';
 
     if (!token) {
       return false;
@@ -191,8 +199,10 @@ return (
       <Container>
         <div>
         <h2>
+          
           {searchedItems.quantity
-            ? `${searchInput} / ${searchedItems.quantity} results`
+            ? 
+            `${searchInput} / ${searchedItems.quantity} results`
             : 'Search for an item to begin'}
         </h2>
 
@@ -204,16 +214,25 @@ return (
                 ) : null}
         </div>
 
+    
+
         <p>
         {searchedItems.price
             ? `Estimated Sale Price (excl. postage): $${searchedItems.price}`
             : null}
         </p>
 
+        <p>
+        {searchedItems.percent
+            ? `Percent move: ${searchedItems.percent}%`
+            : 'No percent shown'}
+        </p>
+
         {Auth.loggedIn() && (
-                    <Button onClick={() => handleSaveItem(id)}>
+                    <Button
+                    onClick={() => handleSaveItem()}>
                       Track Item
-                    </Button>
+                    </Button>          
         )}
         </div>
       </Container>

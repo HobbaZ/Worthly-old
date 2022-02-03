@@ -25,13 +25,15 @@ export const ADD_USER = gql`
 `;
 
 export const SAVE_ITEM = gql`
-mutation saveItem($item: item!) {
+mutation saveItem($item: itemInput!) {
   saveItem(item: $item) {
       _id
       username
       email
       savedItems{ 
                   itemId
+                  purchasePrice
+                  price
                   itemName
                   description
                   itemImages

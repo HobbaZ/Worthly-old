@@ -6,6 +6,7 @@ export const QUERY_USER = gql`
       _id
       username
       email
+
     }
   }
 `;
@@ -16,6 +17,21 @@ export const QUERY_ME = gql`
       _id
       username
       email
+      savedItems{ 
+        itemId
+        purchasePrice
+        price
+        itemName
+        description
+        itemImages
+        saleQuantity
+        postLinks
+        purchasePrice
+        quantity
+        averageSellingPrice
+        highestSellingPrice
+        lowestSellingPrice
+      }
     }
   }
 `;

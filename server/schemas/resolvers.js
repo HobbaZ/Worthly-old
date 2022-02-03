@@ -10,7 +10,7 @@ const resolvers = {
 
     me: async (parent, args, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate('thoughts');
+        return User.findOne({ _id: context.user._id });
       }
       throw new AuthenticationError('You need to be logged in!');
     },
@@ -54,13 +54,13 @@ const resolvers = {
                 console.error(err)
             })
     }
-    throw new AuthenticationError('Please login to add a book!');
+    throw new AuthenticationError('Please login to update an item!');
     },
 
     //Save item if logged in
     saveItem: async (parent, args, context) => {
       if (context.user) {
-        return await User.findOneAndUpdate(
+        const user = await User.findOneAndUpdate(
             {_id: context.User._id},
             {$push: { savedItems: args}},
             { new: true})
@@ -70,8 +70,9 @@ const resolvers = {
             .catch (err => {
                 console.error(err)
             })
+            return user;
     }
-    throw new AuthenticationError('Please login to add a book!');
+    throw new AuthenticationError('Please login to add an item!');
     },
 
     // Delete item if logged in

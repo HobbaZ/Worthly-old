@@ -5,7 +5,7 @@ const typeDefs = gql`
     _id: ID
     username: String!
     email: String!
-    networth: Int
+    networth: Float
     savedItems: [Item]
   }
 
@@ -25,7 +25,8 @@ const typeDefs = gql`
     description: String
     itemImages: [String]
     itemName: String
-    purchasePrice: Int
+    purchasePrice: Float
+    price: Float
     quantity: Int
     saleQuantity: Int
     postLinks: String
@@ -39,7 +40,8 @@ const typeDefs = gql`
     description: String
     itemImages: [String]
     itemName: String
-    purchasePrice: Int
+    purchasePrice: Float
+    price: Float
     quantity: Int
     saleQuantity: Int
     postLinks: String
