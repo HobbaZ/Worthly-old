@@ -22,7 +22,7 @@ const SearchItemsForm = () => {
     // create state for holding returned eBay api data
     const [searchedItems, setSearcheditems] = useState([]);
     // create state for holding our search field data
-    const [searchInput, setSearchInput] = useState({keywords: '', category: '', year: '', itemName: '' });
+    const [searchInput, setSearchInput] = useState({keywords: '', category: '', year: '' });
   
     // create state to hold saved itemId values
     const [savedItemIds, setsavedItemIds] = useState(getSavedItemIds());
@@ -104,9 +104,9 @@ const SearchItemsForm = () => {
   }
   };
 
-  const handleSaveItem = async (itemId) => {
+  const handleSaveItem = async () => {
 
-    const itemToSave = searchedItems.find((item) => item.itemId === itemId);
+    const itemToSave = searchedItems.item.itemId;
 
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -118,7 +118,10 @@ const SearchItemsForm = () => {
     try {
       await saveItem({
         variables: {item: itemToSave },
+        
       });
+
+      console.log('item saved')
 
       // if item successfully saves to user's account, save item id to state
       setsavedItemIds([...savedItemIds, itemToSave.itemId]);
@@ -208,13 +211,8 @@ return (
         </p>
 
         {Auth.loggedIn() && (
-                    <Button
-                      disabled={savedItemIds?.some((savedItemId) => savedItemId === itemId)}
-                      className='btn-block btn-info'
-                      onClick={() => handleSaveItem(itemId)}>
-                      {savedItemIds?.some((savedItemId) => savedItemId === itemId)
-                        ? 'Already added!'
-                        : 'Tracking'}
+                    <Button onClick={() => handleSaveItem(id)}>
+                      Track Item
                     </Button>
         )}
         </div>

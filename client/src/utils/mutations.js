@@ -25,8 +25,8 @@ export const ADD_USER = gql`
 `;
 
 export const SAVE_ITEM = gql`
-mutation saveItem($itemId: String!) {
-  saveItem(itemId: $itemId) {
+mutation saveItem($item: item!) {
+  saveItem(item: $item) {
       _id
       username
       email
@@ -37,7 +37,7 @@ mutation saveItem($itemId: String!) {
                   itemImages
                   saleQuantity
                   postLinks
-                  purchssePrice
+                  purchasePrice
                   quantity
                   averageSellingPrice
                   highestSellingPrice
