@@ -29,12 +29,12 @@ mutation saveItem($item: itemInput!) {
   saveItem(item: $item) {
       _id
       username
-      email
       savedItems{ 
                   itemId
                   purchasePrice
                   price
                   itemName
+                  percent
                   description
                   itemImages
                   saleQuantity
@@ -54,7 +54,6 @@ mutation editItem($itemId: String!) {
   editItem(itemId: $itemId) {
       _id
       username
-      email
       savedItems{ 
                   itemId
                   itemName

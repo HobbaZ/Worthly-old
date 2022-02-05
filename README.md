@@ -11,12 +11,12 @@
 
 ## Description
 ### Project Aim ###
-Keeping track of your interesting and collectable things can be a challenge. What search term did I use? What was the price some months ago? Is the price the real selling price or the seller wanted sale price? In comes app name, where you can search for your item and see the highest, lowest and average real sale price over a period of time.
+Keeping track of your interesting and collectable things can be a challenge. What search term did I use? What was the price some months ago? Is the price the real selling price or the seller wanted sale price? In comes Worthly, where you can search for your item and see the highest, lowest and average real sale price over a period of time.
 
 ### What Problem Does It Solve ###
 
 ### What I Learnt ###
-
+How to install polyfills and modify webpack.config for fallback functions
 
 ## Deployment
 You can view the [website link](HobbaZ/Project-3-Final-Project) running on Heroku here. 
@@ -64,13 +64,13 @@ Creating an item
 
 4. Open a new Terminal in VS Code and type ```npm install``` to install the repo dependencies.
 
-5. Finally, type ```npm run develop``` into the terminal and navigate to localhost:3001 in your web browser.
+5. Finally, type ```npm run develop``` into the terminal and navigate to localhost:3000 in your web browser.
 
 ## Features
 
 - Create and track your items
 - Edit your items
-- Upload photos of your items
+- Upload photos of your items?
 
 ## Technology
 
@@ -80,6 +80,8 @@ Creating an item
 - React
 - JWT
 - MongoDB
+- Crypto
+- Serpapi Ebay API
 - Styled Components
 
 ## Contributors
@@ -88,7 +90,12 @@ Creating an item
 You can also contribute by opening a pull request or submitting an issue.
 
 ## Acknowledgements
-[](https://medium.com/serpapi/how-to-scrape-product-data-from-google-shopping-f1193abd5dc3)
+[https://medium.com/serpapi/how-to-scrape-product-data-from-google-shopping-f1193abd5dc3](https://medium.com/serpapi/how-to-scrape-product-data-from-google-shopping-f1193abd5dc3)
+
+[Polyfills for webpack 5 SerpAPI requirements](https://stackoverflow.com/questions/68707553/uncaught-referenceerror-buffer-is-not-defined)
+
+[https://serpapi.com/ebay-organic-results](https://serpapi.com/ebay-organic-results)
+
 
 ## Testing
 List any unit tests you've created for your project here
@@ -96,7 +103,7 @@ List any unit tests you've created for your project here
 ## License
 MIT
 
-**Copyright 2021 Zachary Hobba**
+**Copyright 2022 Zachary Hobba**
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.

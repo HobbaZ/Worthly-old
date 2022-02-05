@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { Container } from 'react-bootstrap';
+import { Container } from '../styles/GenericStyles';
 
 import { QUERY_USER, QUERY_ME } from '../utils/queries';
 
@@ -31,21 +31,20 @@ const Profile = () => {
 
   return (
     <Container>
-        <h2 className="col-12 col-md-10 bg-dark text-light p-3 mb-5">
-          Viewing {userParam ? `${user.username}'s` : 'My'} Profile
-        </h2>
+      <div>
+        <h2>{userParam ? `${user.username}'s` : 'Your'} Profile</h2>
 
-        <div className="col-12 col-md-10 mb-5">
+        <div>
           <p>Username: {user.username}</p>
           <p>Email: {user.email}</p>
         </div>
         {!userParam && (
           <div
-            className="col-12 col-md-10 mb-3 p-3"
             style={{ border: '1px dotted #1a1a1a' }}
           >
           </div>
         )}
+        </div>
     </Container>
   );
 };

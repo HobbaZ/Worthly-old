@@ -4,9 +4,10 @@ import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
 import { DELETE_ITEM } from '../utils/mutations';
 
-import { Container, Card, Button, Jumbotron } from 'react-bootstrap'; //migrate to Styled Components
+import { Button, Container, Image } from '../styles/GenericStyles';
 
 import Auth from '../utils/auth';
+import { removeItemId } from '../utils/localStorage';
 
 const SavedItems = () => {
   const { loading, data } = useQuery(QUERY_ME);
@@ -15,7 +16,13 @@ const SavedItems = () => {
   //delete mutation
   const [ deleteItem ] = useMutation(DELETE_ITEM);
 
-  // create function that accepts the item's mongo _id value deletes from the database
+  const content = JSON.parse(localStorage.getItem('saved_items'));
+
+  console.log(content)
+
+  console.log("Current records in db: ", content.length)
+
+  // create function that accepts the item's id value deletes from the database
   const handleDeleteItem = async (itemId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -26,9 +33,10 @@ const SavedItems = () => {
     try {
       //pass in user data object as argument, pass in itemId variable to deleteitem
       await deleteItem({
-        variables: { itemId: itemId },
+        variables: { item: itemId },
       })
 
+      removeItemId(itemId);
     } catch (err) {
       console.error(err);
     }
@@ -41,29 +49,35 @@ const SavedItems = () => {
 
   return (
     <>
-      <Jumbotron className='text-light bg-dark'>
-        <Container>
-          <h1>Your Stuff!</h1>
-        </Container>
-      </Jumbotron>
-      <Container>
+    <Container>
+      <div>
+          <h1>Your Saved Stuff!</h1>
+      </div>
+      <div>
+      <h2>
+          {content?.length
+            ? `Viewing ${content.length} saved ${content.length === 1 ? 'item' : 'items'}:`
+            : 'You aren\'t tracking anything yet!'}
+        </h2>
  
-          {userData.savedItems?.map((item) => {
+          {content?.map((item) => {
             return (
-              <Card key={item.itemId} border='dark'>
-                {item.itemImages ? <Card.Img src={item.itemImages} alt={`Image for ${item.itemName}`} variant='top' /> : null}
-                <Card.Body>
-                  <Card.Title>{item.itemName}</Card.Title>
-                  <p>Description: {item.description}</p>
-                  <p>Purchase Price: {item.purchasePrice}</p>
-                  <p>Average Sale Price: {item.averageSellingPrice}</p>
-                  <Button className='btn-block btn-danger' onClick={() => handleDeleteItem(item.itemId)}>
+              <div key={item.itemId} border='dark'>
+                {item.itemImages ? <Image src={item.itemImages} alt={`Image for ${item.itemName}`} variant='top'></Image> : null}
+                  <h2>{item.itemName}</h2>
+                  <p>Purchase Price: ${item.purchasePrice}</p>
+                  <p>Average Sale Price: ${item.price}</p>
+                  <p>{item.percent
+                  ? `Percent Profit: ${item.percent <= 0 ? '-' : '+'} ${item.percent}`
+                  : 'Error showing percent movement'}%</p>
+
+                  <Button onClick={() => handleDeleteItem(item.itemId)}>
                     Delete
                   </Button>
-                </Card.Body>
-              </Card>
+              </div>
             );
           })}
+      </div>
       </Container>
     </>
   );

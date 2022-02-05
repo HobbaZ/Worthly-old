@@ -22,7 +22,7 @@ const server = new ApolloServer({
 server.applyMiddleware({ app });
 
 app.use(express.urlencoded({ extended: false }));
-app.use(cors);
+//app.use(cors);
 app.use(express.json());
 app.use(function(req, res) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000/");

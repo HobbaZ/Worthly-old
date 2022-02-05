@@ -26,13 +26,13 @@ const resolvers = {
       const user = await User.findOne({ email });
 
       if (!user) {
-        throw new AuthenticationError('No user found with this email address');
+        throw new AuthenticationError('Incorrect password or email address entered');
       }
 
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError('Incorrect credentials');
+        throw new AuthenticationError('Incorrect password or email address entered');
       }
 
       const token = signToken(user);
@@ -59,28 +59,31 @@ const resolvers = {
 
     //Save item if logged in
     saveItem: async (parent, args, context) => {
-      if (context.user) {
-        const user = await User.findOneAndUpdate(
+      try {
+        if (context.user) {
+        return await User.findOneAndUpdate(
             {_id: context.User._id},
             {$push: { savedItems: args}},
-            { new: true})
+            { new: true, runValidators: true})
             .then (result => {
                 return{result}
             })
             .catch (err => {
                 console.error(err)
             })
-            return user;
     }
-    throw new AuthenticationError('Please login to add an item!');
-    },
+    throw new AuthenticationError('Please login to add a book!');
+}
+catch (err) {
+    console.log(err)
+}},
 
     // Delete item if logged in
     deleteItem: async (parent, {itemId}, context) => {
       if (context.user) {
       const user = await User.findOneAndUpdate(
           { _id: context.user._id},
-          {$pull: { savedItems: {itemId}}},
+          {$pull: { savedItems: itemId}},
           { new: true});
           return user;      
   }

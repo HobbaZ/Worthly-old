@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Form, Button, Card } from 'react-bootstrap';
+
+import { Form, FormField, Label, FormGroup } from '../styles/FormStyle';
+
+import { Button, Container, Image } from '../styles/GenericStyles';
 
 import Auth from '../utils/auth';
 
@@ -22,7 +25,7 @@ const SearchItemsForm = () => {
     // create state for holding returned eBay api data
     const [searchedItems, setSearcheditems] = useState({});
     // create state for holding our search field data
-    const [searchInput, setSearchInput] = useState({keywords: '', itemName: '', year: ''});
+    const [searchInput, setSearchInput] = useState({keywords: '', itemName: '', year: '', userPaid: 0});
   
     // create state to hold saved itemId values
     const [savedItemIds, setsavedItemIds] = useState(getSavedItemIds());
@@ -35,6 +38,7 @@ const SearchItemsForm = () => {
       return () => saveItemIds(savedItemIds);
     });
 
+    //Search form handler
     const handleInputChange = event => {
         const { name, value } = event.target;
         setSearchInput({ ...searchInput, [name]: value });
@@ -46,12 +50,12 @@ const SearchItemsForm = () => {
 
     if (!searchInput) {
       return false;
-    } else {
+    }
 
     const search = new SerpApi.GoogleSearch(apiKey);
 
     try {
-      const response = await fetch(`https://serpapi.com/search?engine=ebay&ebay_domain=ebay.com.au&_nkw=${searchInput}&source=nodejs&output=json&api_key=${apiKey}`)
+      const response = await fetch(`https://serpapi.com/search?engine=ebay&ebay_domain=ebay.com.au&_nkw=${searchInput.itemName}&source=nodejs&output=json&api_key=${apiKey}`)
 
       if (!response.ok) {
         console.log(response);
@@ -71,20 +75,26 @@ const SearchItemsForm = () => {
     let average = 0;
 
     for (let index = 0; index < organic_results.length; index++) {
-      let priceMinusPostage = organic_results[index].price.extracted - 9; //Guestimate of average postage
-      total = total+priceMinusPostage;
-    }
+      let priceMinusPostage = organic_results[index]?.price?.extracted - 9 || organic_results[index]?.shipping?.extracted - 15 || organic_results[index]?.price?.to?.extracted - 9  //Guestimate of average postage
+      total = total+parseFloat(priceMinusPostage);
 
+      console.log("Data Received:", organic_results[index])
+    }
     average = (total/organic_results.length).toFixed(2);
-    return (average);
-    }
 
-    const percentage = (purchase, ave) => {
-      purchase = 46;
-      ave = averagePrice()
+    console.log("Average is:", average)
+    console.log("Total is:", total)
+    
+    return average;
+    };
 
-      let percent = ((ave/purchase)*100).toFixed(1);
-        return (percent)
+    //Percentage function
+    const percentage = () => {
+      let ave = averagePrice()
+
+      let percent = ((ave/10)*100).toFixed(1);
+      console.log("Percent:", percent)
+        return parseFloat(percent)
     };
 
     const searchData = () => ({
@@ -92,9 +102,9 @@ const SearchItemsForm = () => {
       itemId: id,
       quantity: organic_results.length,
       itemImages: organic_results[0].thumbnail || [],
-      price: averagePrice(),
-      purchasePrice: 20,
-      percent: percentage(),
+      price: parseFloat(averagePrice()),
+      purchasePrice: parseInt(searchInput.userPaid),
+      percent: parseFloat(percentage()),
     })
 
     setSearcheditems(searchData);
@@ -104,20 +114,19 @@ const SearchItemsForm = () => {
       keywords: '',
       year: '',
       itemName: '',
+      //userPaid: 0,
     });
     } catch (err) {
       console.error(err);
     }
-  }
   };
 
   const handleSaveItem = async () => {
 
-    console.log(searchedItems)
     const itemToSave = {...searchedItems};
 
     // get token
-    const token = Auth.loggedIn() ? Auth.getToken() : 'No Token';
+    const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
       return false;
@@ -129,10 +138,10 @@ const SearchItemsForm = () => {
         
       });
 
-      console.log('item saved')
+      // if item successfully saves to user's account, save item to state
+      setsavedItemIds([...savedItemIds, itemToSave]);
+      console.log('item saved', setsavedItemIds())
 
-      // if item successfully saves to user's account, save item id to state
-      setsavedItemIds([...savedItemIds, itemToSave.itemId]);
     } catch (err) {
       console.error(err);
     };
@@ -140,102 +149,85 @@ const SearchItemsForm = () => {
 
 return (
     <>
-      <div className='text-light bg-dark'>
-        <Container>
+    <Container>
+      <div>
           <h1>Search For Stuff!</h1>
-          <div>
               <h3>Search Tips...</h3>
               <p>Search for the item's brand and model number instead of vague search terms like colour and type of item</p>
-          </div>
+      </div>
 
           <Form onSubmit={handleFormSubmit}>
 
             {/*Keyword Searchbar*/}
 
-            <Form.Group>
-              <Form.Label htmlFor='itemName'>Item Name</Form.Label>
-              <Form.Control
+              <FormGroup>
+              <Label>Item Name</Label>
+              <FormField
                 type='text'
                 placeholder='Name of item'
                 name='itemName'
                 onChange={handleInputChange}
-                value={searchInput.itemName}
-              />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label htmlFor='year'>Manufacture Year</Form.Label>
-              <Form.Control
+                value={searchInput.itemName}>
+              </FormField>
+              </FormGroup>
+            
+              <FormGroup>
+              <Label>User Paid</Label>
+              <FormField
                 type='text'
-                placeholder='year of manufacture'
-                name='year'
+                placeholder='Cost of Item'
+                name='userPaid'
                 onChange={handleInputChange}
-                value={searchInput.year}
-              />
-            </Form.Group>
+                value={searchInput.userPaid}>
+              </FormField>
+              </FormGroup>
 
-            <Form.Group>
-              <Form.Label htmlFor='keywords'>Keywords</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='item keywords'
-                name='keywords'
-                onChange={handleInputChange}
-                value={searchInput.keywords}
-              />
-            </Form.Group>
-
+              <FormGroup>
             <Button
-              disabled={!(searchInput.keywords || searchInput.itemName || searchInput.year)}
+              disabled={!(searchInput.itemName || searchInput.userPaid)}
               type='submit'
               variant='success'>
               Submit
             </Button>
+            </FormGroup>
           </Form>
-        </Container>
-      </div>
+      </Container>
 
-      {/* Results container */}
       <Container>
-        <div>
-        <h2>
-          
+      {/* Results container */}
+        <h4>{searchedItems.itemName}</h4>
+        <p>
           {searchedItems.quantity
             ? 
-            `${searchInput} / ${searchedItems.quantity} results`
+            `${searchedItems.quantity} results`
             : 'Search for an item to begin'}
-        </h2>
-
-        <p>{searchedItems.itemName}</p>
+        </p>
 
         <div>  
         {searchedItems.itemImages ? (
-                  <img src={searchedItems.itemImages} alt={`The default for ${searchInput}`} variant='top' />
+                  <Image src={searchedItems.itemImages} alt={`The default for ${searchInput.itemName}`} variant='top'></Image>
                 ) : null}
         </div>
 
-    
-
         <p>
         {searchedItems.price
-            ? `Estimated Sale Price (excl. postage): $${searchedItems.price}`
+            ? `Estimated Sale Price: $${searchedItems.price}`
             : null}
         </p>
 
         <p>
         {searchedItems.percent
-            ? `Percent move: ${searchedItems.percent}%`
-            : 'No percent shown'}
+            ? `Profit: ${searchedItems.percent}%`
+            : null}
         </p>
 
         {Auth.loggedIn() && (
-                    <Button
-                    onClick={() => handleSaveItem()}>
-                      Track Item
-                    </Button>          
+            <Button
+            onClick={() => handleSaveItem()}>
+              Track Item
+            </Button>          
         )}
-        </div>
-      </Container>
+        </Container>
     </>
   );
 };

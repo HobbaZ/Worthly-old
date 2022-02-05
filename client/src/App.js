@@ -9,6 +9,8 @@ import { setContext } from '@apollo/client/link/context';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Profile from './pages/Profile';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 import SearchItems from './pages/SearchItems';
 import SavedItems from './pages/SavedItems';
 import Footer from './components/Footer';
@@ -39,14 +41,16 @@ function App() {
   return (
     <ApolloProvider client={client}>
     <Router>
-        <div className="flex-column justify-flex-start min-100-vh">
+        <div>
           <AppNavBar/>
-          <div className="container">
+          <div>
 
           <Switch>
           <Route exact path='/' component={SearchItems} />
-          <Route exact path='/saved' component={SavedItems} />
+          <Route exact path='/saved-stuff' component={SavedItems} />
           <Route exact path='/profile' component={Profile} />
+          <Route exact path='/login' component={Login} />
+          <Route exact path='/signup' component={Signup} />
           <Route render={() => <h1 className='display-2'>Wrong page!</h1>} />
         </Switch>
         </div>

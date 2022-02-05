@@ -29,6 +29,7 @@ const typeDefs = gql`
     price: Float
     quantity: Int
     saleQuantity: Int
+    percent: Float
     postLinks: String
     highestSellingPrice: Int
     lowestSellingPrice: Int
@@ -42,6 +43,7 @@ const typeDefs = gql`
     itemName: String
     purchasePrice: Float
     price: Float
+    percent: Float
     quantity: Int
     saleQuantity: Int
     postLinks: String
