@@ -6,7 +6,7 @@ export const Form = styled.form`
     display: flex;
     flex-direction: column;
     margin: auto;
-    @media (max-width: 400px) {
+    @media (max-width: 430px) {
         width: 90%
       }
 `;

@@ -84,9 +84,9 @@ const SavedItems = () => {
                   <p>Purchase Price: ${item.purchasePrice}</p>
                   <p>Average Sale Price: ${item.price}</p>
 
-                  <p > Profit:
+                  <p >
                     {item.profit
-                            ? `${item.profit <= 0 ? ' -' : ' +'} $${item.profit}  `
+                            ? `Profit: ${item.profit <= 0 ? ' -' : ' +'} $${item.profit}  `
                             : null}
 
                   {item.percent
@@ -106,6 +106,8 @@ const SavedItems = () => {
             <Container>
                 <h1> Total Stuff Networth</h1>
                 <h4>${netWorth()}</h4>
+
+                <h5>Highest mover: </h5>
 
             </Container>
       </div>

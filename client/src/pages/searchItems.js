@@ -106,17 +106,17 @@ const SearchItemsForm = () => {
     }
 
     const searchData = () => ({
-      itemName: organic_results[0].title,
+      itemName: organic_results[0]?.title,
       itemId: id,
       quantity: organic_results.length,
-      itemImages: organic_results[0].thumbnail || [],
+      itemImages: organic_results[0]?.thumbnail || [],
       price: parseFloat(averagePrice()),
       purchasePrice: parseFloat(searchInput.userPaid),
       percent: parseFloat(percentage()),
       profit: parseFloat(profit()),
     })
 
-    setSearcheditems(searchData);
+      setSearcheditems(searchData);
 
       setSearchInput({
       //Reset all fields
@@ -149,7 +149,7 @@ const SearchItemsForm = () => {
 
       // if item successfully saves to user's account, save item to state
 
-      setsavedItemIds([...savedItemIds, itemToSave.itemId]);
+      setsavedItemIds([...savedItemIds, itemToSave]);
       console.log('item saved', setsavedItemIds())
 
     } catch (err) {
@@ -162,6 +162,8 @@ const SearchItemsForm = () => {
   } else {
     <p style={{color: 'green'}}></p>
   }
+
+  const content = JSON.parse(localStorage.getItem('saved_items'));
 
 return (
     <>
@@ -219,7 +221,13 @@ return (
         </ImageBlock>
 
       <TextBlock>
-        <h1>{searchedItems.itemName}</h1>
+      <h2>
+      {searchedItems.itemName
+      ?
+      `${searchedItems.itemName}`
+      : `No search results found`}
+       </h2>
+
         <h4>
           {searchedItems.quantity
             ? 
@@ -246,8 +254,10 @@ return (
 
         {Auth.loggedIn() && (
             <Button
+            
+            disabled={savedItemIds?.some((savedItemId) => savedItemId === content.itemId)}
             onClick={() => handleSaveItem()}>
-              {savedItemIds
+              {savedItemIds?.some((savedItemId) => savedItemId === content.itemId)
                         ? 'This item is already tracked!'
                         : 'Track item!'}
             </Button>          

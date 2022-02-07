@@ -42,7 +42,7 @@ export const ResultsContainer = styled.div`
     display: flex;
     align-items: center;
 
-    @media (max-width: 400px) {
+    @media (max-width: 430px) {
         flex-direction: column;
         justify-content: center;
       }
@@ -50,10 +50,13 @@ export const ResultsContainer = styled.div`
 
 export const TextBlock = styled.div`
     padding: 5px;
+    justify-content: center;
+    align-items: center;
 `;
 
 export const ImageBlock = styled.div`
     padding: 10px;
+    
 `;
 
 export const Image = styled.img`
