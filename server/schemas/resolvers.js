@@ -79,11 +79,11 @@ catch (err) {
 }},
 
     // Delete item if logged in
-    deleteItem: async (parent, {itemId}, context) => {
+    deleteItem: async (parent, args, context) => {
       if (context.user) {
       const user = await User.findOneAndUpdate(
           { _id: context.user._id},
-          {$pull: { savedItems: itemId}},
+          {$pull: { savedItems: args}},
           { new: true});
           return user;      
   }

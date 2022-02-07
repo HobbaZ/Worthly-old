@@ -96,6 +96,8 @@ You can also contribute by opening a pull request or submitting an issue.
 
 [https://serpapi.com/ebay-organic-results](https://serpapi.com/ebay-organic-results)
 
+[https://www.amp-what.com/unicode/search/up%20arrow](https://www.amp-what.com/unicode/search/up%20arrow)
+
 
 ## Testing
 List any unit tests you've created for your project here

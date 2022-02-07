@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Form, FormField, Label, FormGroup } from '../styles/FormStyle';
 
-import { Button, Container, Image } from '../styles/GenericStyles';
+import { Button, Container, Image, TextBlock, ResultsContainer, ImageBlock } from '../styles/GenericStyles';
 
 import Auth from '../utils/auth';
 
@@ -92,10 +92,18 @@ const SearchItemsForm = () => {
     const percentage = () => {
       let ave = averagePrice()
 
-      let percent = ((ave/10)*100).toFixed(1);
-      console.log("Percent:", percent)
-        return parseFloat(percent)
+      let difference = (ave - searchInput.userPaid)
+
+      let percent = ((difference/ave)*100).toFixed(1);
+        return percent
     };
+
+    const profit = () => {
+      let ave = averagePrice()
+      let difference = (ave - searchInput.userPaid).toFixed(2)
+      console.log('Total profit: $', difference)
+      return difference;
+    }
 
     const searchData = () => ({
       itemName: organic_results[0].title,
@@ -103,8 +111,9 @@ const SearchItemsForm = () => {
       quantity: organic_results.length,
       itemImages: organic_results[0].thumbnail || [],
       price: parseFloat(averagePrice()),
-      purchasePrice: parseInt(searchInput.userPaid),
+      purchasePrice: parseFloat(searchInput.userPaid),
       percent: parseFloat(percentage()),
+      profit: parseFloat(profit()),
     })
 
     setSearcheditems(searchData);
@@ -139,13 +148,20 @@ const SearchItemsForm = () => {
       });
 
       // if item successfully saves to user's account, save item to state
-      setsavedItemIds([...savedItemIds, itemToSave]);
+
+      setsavedItemIds([...savedItemIds, itemToSave.itemId]);
       console.log('item saved', setsavedItemIds())
 
     } catch (err) {
       console.error(err);
     };
   };
+
+  if (searchedItems.profit <= 0) {
+    <p style={{color: 'red'}}></p>
+  } else {
+    <p style={{color: 'green'}}></p>
+  }
 
 return (
     <>
@@ -193,21 +209,23 @@ return (
           </Form>
       </Container>
 
-      <Container>
+      <ResultsContainer>
       {/* Results container */}
-        <h4>{searchedItems.itemName}</h4>
-        <p>
+
+      <ImageBlock>  
+        {searchedItems.itemImages ? (
+                  <Image src={searchedItems.itemImages} alt={`The default for ${searchInput.itemName}`} variant='top'></Image>
+                ) : null}
+        </ImageBlock>
+
+      <TextBlock>
+        <h1>{searchedItems.itemName}</h1>
+        <h4>
           {searchedItems.quantity
             ? 
             `${searchedItems.quantity} results`
             : 'Search for an item to begin'}
-        </p>
-
-        <div>  
-        {searchedItems.itemImages ? (
-                  <Image src={searchedItems.itemImages} alt={`The default for ${searchInput.itemName}`} variant='top'></Image>
-                ) : null}
-        </div>
+        </h4>
 
         <p>
         {searchedItems.price
@@ -215,19 +233,28 @@ return (
             : null}
         </p>
 
-        <p>
-        {searchedItems.percent
-            ? `Profit: ${searchedItems.percent}%`
+
+          
+        <p >
+        {searchedItems.profit
+            ? `Profit: ${searchedItems.profit <= 0 ? ' -' : ' +'} $${searchedItems.profit}  `
             : null}
-        </p>
+
+        {searchedItems.percent
+                  ? `(${searchedItems.percent <= 0 ?  ' ↓' : ' ↑'} ${searchedItems.percent}%)`
+                  : null}</p>
 
         {Auth.loggedIn() && (
             <Button
             onClick={() => handleSaveItem()}>
-              Track Item
+              {savedItemIds
+                        ? 'This item is already tracked!'
+                        : 'Track item!'}
             </Button>          
         )}
-        </Container>
+        </TextBlock>
+        </ResultsContainer>
+        
     </>
   );
 };

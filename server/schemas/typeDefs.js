@@ -27,6 +27,7 @@ const typeDefs = gql`
     itemName: String
     purchasePrice: Float
     price: Float
+    profit: Float
     quantity: Int
     saleQuantity: Int
     percent: Float
@@ -37,13 +38,14 @@ const typeDefs = gql`
   }
 
   input itemInput {
-    itemId: String,
+    itemId: String
     description: String
     itemImages: [String]
     itemName: String
     purchasePrice: Float
     price: Float
     percent: Float
+    profit: Float
     quantity: Int
     saleQuantity: Int
     postLinks: String

@@ -61,7 +61,7 @@ mutation editItem($itemId: String!) {
                   itemImages
                   saleQuantity
                   postLinks
-                  purchssePrice
+                  purchasePrice
                   quantity
                   averageSellingPrice
                   highestSellingPrice
@@ -73,7 +73,7 @@ mutation editItem($itemId: String!) {
 
 export const DELETE_ITEM = gql`
   mutation deleteItem($itemId: String!) {
-    deleteItem(itemId: $itemId) {
+    deleteItem(item: $itemId) {
         _id
         username
         email
@@ -84,7 +84,7 @@ export const DELETE_ITEM = gql`
                     itemImages
                     saleQuantity
                     postLinks
-                    purchssePrice
+                    purchasePrice
                     quantity
                     averageSellingPrice
                     highestSellingPrice

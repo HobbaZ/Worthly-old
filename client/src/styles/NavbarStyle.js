@@ -3,19 +3,25 @@ import styled from 'styled-components';
 
 export const Nav = styled.nav`
   background: rgb(92, 126, 170);
-  height: 85px;
+  height: auto;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   padding: 5px;
-  border-bottom: 10px solid rgb(0, 62, 143);
+  margin-bottom: 10px;
+  border-bottom: 2px solid black;
+
+  @media (max-width: 400px) {
+    flex-direction: column;
+    justify-content: center;
+  }
 `;
 
 export const NavLink = styled(Link)`
   color: rgb(0, 0, 0);
-  display: flex;
   align-items: center;
   margin: 0 auto;
-  font-size: 35px;
+  font-size: 20px;
   font-weight: 400;
   text-decoration: none;
   padding: 10px;

@@ -1,11 +1,14 @@
 import styled from "styled-components";
 
 export const Form = styled.form`
-    width: 25%;
+    width: 50%;
     height: 100%;
     display: flex;
     flex-direction: column;
     margin: auto;
+    @media (max-width: 400px) {
+        width: 90%
+      }
 `;
 
 export const FormField = styled.input`
