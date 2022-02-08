@@ -234,11 +234,14 @@ return (
           {searchedItems.quantity
             ? 
             `${searchedItems.quantity} results`
-            : 'Search for an item to begin'}
+            : null}
         </h4>
 
         <p>
-          Purchase Price: ${searchedItems.purchasePrice}
+          {searchedItems.purchasePrice
+          ?
+          `Purchase Price: ${searchedItems.purchasePrice}`
+          : null}
         </p>
 
         <p>

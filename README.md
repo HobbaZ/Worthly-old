@@ -24,6 +24,8 @@ Currently only running on localhost, please clone the git repo to your computer,
 
 ![example .env file]("../images/envexample.png")
 
+If the screen goes completely white, just refresh the page as that is currently a rendering bug that needs to be fixed.
+
 ## Table of Contents
 - [Description](#description)
 - [User Story](#user-story)
@@ -74,10 +76,10 @@ Then I’m returned to the login screen.
 ## Screenshots
 
 Site homepage
-!["Site Homepage"]("../images/screencapture-localhost-3000-2022-02-08-12_44_39.png")
+![Site Homepage]("../images/screencapture-localhost-3000-2022-02-08-12_44_39.png")
 
 Creating an item
-!["Creating an item"]("../images/screencapture-localhost-3000-saved-stuff-2022-02-08-12_42_01.png")
+![Creating an item]("../images/screencapture-localhost-3000-saved-stuff-2022-02-08-12_42_01.png")
 
 ## Installation
 
@@ -121,6 +123,8 @@ You can also contribute by opening a pull request or submitting an issue.
 [https://serpapi.com/ebay-organic-results](https://serpapi.com/ebay-organic-results)
 
 [https://www.amp-what.com/unicode/search/up%20arrow](https://www.amp-what.com/unicode/search/up%20arrow)
+
+[https://styled-components.com/docs/basics#getting-started](https://styled-components.com/docs/basics#getting-started)
 
 
 ## Testing
