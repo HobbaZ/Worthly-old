@@ -22,7 +22,7 @@ How to install polyfills and modify webpack.config for fallback functions, learn
 ## Deployment
 Currently only running on localhost, please clone the git repo to your computer, install dependencies and start the development server to run it on your machine. The site needs CORS, the current workaround is Installing the Moesif CORS extension to Chrome and turning it on while using the site. You will also need an API key from (https://serpapi.com/)[https://serpapi.com/] and need to create a .env file inside the client folder with your api key pasted inside it
 
-![example .env file]("../images/envexample.png")
+![example .env file](client/images/envexample.PNG)
 
 If the screen goes completely white, just refresh the page as that is currently a rendering bug that needs to be fixed.
 
@@ -76,10 +76,10 @@ Then I’m returned to the login screen.
 ## Screenshots
 
 Site homepage
-![Site Homepage]("../images/screencapture-localhost-3000-2022-02-08-12_44_39.png")
+![Site Homepage](client/images/screencapture-localhost-3000-2022-02-08-12_44_39.png)
 
 Creating an item
-![Creating an item]("../images/screencapture-localhost-3000-saved-stuff-2022-02-08-12_42_01.png")
+![Creating an item](client/images/screencapture-localhost-3000-saved-stuff-2022-02-08-12_42_01.png)
 
 ## Installation
 
@@ -96,7 +96,6 @@ Creating an item
 ## Features
 
 - Create and track your items
-- Edit your items
 
 ## Technology
 
@@ -107,7 +106,7 @@ Creating an item
 - JWT
 - MongoDB
 - Crypto
-- Serpapi Ebay API
+- Serp api Ebay API
 - Styled Components
 
 ## Contributors
@@ -128,7 +127,7 @@ You can also contribute by opening a pull request or submitting an issue.
 
 
 ## Testing
-List any unit tests you've created for your project here
+No tests at the moment
 
 ## License
 MIT
