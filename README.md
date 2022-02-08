@@ -1,4 +1,4 @@
-# README TEMPLATE
+# Worthly
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://choosealicense.com/licenses/mit/)
 [![Github Commits](https://img.shields.io/github/commit-activity/w/HobbaZ/Project-3-Final-Project)](https://github.com/HobbaZ/Project-3-Final-Project/commits)
@@ -11,15 +11,16 @@
 
 ## Description
 ### Project Aim ###
-Keeping track of your interesting and collectable things can be a challenge. What search term did I use? What was the price some months ago? Is the price the real selling price or the seller wanted sale price? In comes Worthly, where you can search for your item and see the highest, lowest and average real sale price over a period of time.
+Keeping track of your interesting and collectable things can be a challenge. What search term did I use? What was the price some months ago? Is the price the real selling price or the seller wanted sale price? In comes Worthly, where you can search for your item and see the highest, lowest and average sale price over a period of time.
 
 ### What Problem Does It Solve ###
+Collates estimated values of your various items so you can keep track of them and discover your stuff networth.
 
 ### What I Learnt ###
-How to install polyfills and modify webpack.config for fallback functions
+How to install polyfills and modify webpack.config for fallback functions, learnt more about React and incorporating styled components
 
 ## Deployment
-You can view the [website link](HobbaZ/Project-3-Final-Project) running on Heroku here. 
+Currently only running on localhost, please clone the git repo to your computer, install dependencies and start the development server to run it on your machine. The site needs CORS, the current workaround is Installing the Moesif CORS extension to Chrome and turning it on while using the site.
 
 ## Table of Contents
 - [Description](#description)
@@ -35,24 +36,46 @@ You can view the [website link](HobbaZ/Project-3-Final-Project) running on Herok
 - [Questions](#questions)
 
 ## User Story
-GIVEN a basic application description (e.g. GIVEN a command line application that accepts user input)
+As a collector of various things
 
-WHEN I do something (e.g. WHEN I click a button)
+I Want to get an idea of the item’s estimated value and selling rate
 
-THEN some action happens (e.g. THEN I am redirected to repo owner's Github page)
+So That I can decide whether to sell or keep the items
 
-Repeat WHEN and THEN until all major project needs have been defined
+## Acceptance Criteria
+Given a item value reference site
+
+When I first view the site, I can enter the item name and my purchase price
+
+Then I am presented with my profit and profit percentage
+
+When I click Signup
+
+Then I’m presented with the sing up page where I can create an account
+
+When I click Login
+
+Then I can login to my account
+
+If logged in, I can search for a item and add it to my saved item’s list, view the saved item’s list, my profile and logout
+
+When I click Saved Stuff
+
+Then I can view my saved item’s and total item networth
+
+When I click Your Profile I can view my profile details
+
+When I click logout
+
+Then I’m returned to the login screen.
 
 ## Screenshots
 
 Site homepage
-![]()
-
-Example profile
-![]()
+!["Site Homepage"]("../images/screencapture-localhost-3000-2022-02-08-12_44_39.png")
 
 Creating an item
-![]()
+!["Creating an item"]("../images/screencapture-localhost-3000-saved-stuff-2022-02-08-12_42_01.png")
 
 ## Installation
 
