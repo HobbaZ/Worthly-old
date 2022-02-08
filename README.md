@@ -55,7 +55,7 @@ Then I am presented with my profit and profit percentage
 
 When I click Signup
 
-Then I’m presented with the sing up page where I can create an account
+Then I’m presented with the signup page where I can create an account
 
 When I click Login
 

@@ -28,7 +28,6 @@ export const SAVE_ITEM = gql`
 mutation saveItem($item: itemInput!) {
   saveItem(item: $item) {
       _id
-      username
       savedItems{ 
                   itemId
                   purchasePrice
@@ -53,7 +52,6 @@ export const EDIT_ITEM = gql`
 mutation editItem($itemId: String!) {
   editItem(itemId: $itemId) {
       _id
-      username
       savedItems{ 
                   itemId
                   itemName
@@ -75,8 +73,6 @@ export const DELETE_ITEM = gql`
   mutation deleteItem($itemId: String!) {
     deleteItem(item: $itemId) {
         _id
-        username
-        email
         savedItems{ 
                     itemId
                     itemName

@@ -42,10 +42,13 @@ const resolvers = {
 
     //Update item if logged in
     updateItem: async (parent, args, context) => {
+
+      const createItem = await item.Create({args})
+
       if (context.user) {
         return await User.findOneAndUpdate(
-            {_id: context.User._id},
-            {$push: { savedBooks: args}},
+            {_id: context.user._id},
+            {$push: { savedBooks: createItem}},
             { new: true})
             .then (result => {
                 return{result}
@@ -62,7 +65,7 @@ const resolvers = {
       try {
         if (context.user) {
         return await User.findOneAndUpdate(
-            {_id: context.User._id},
+            {_id: context.user._id},
             {$push: { savedItems: args}},
             { new: true})
             .then (result => {
