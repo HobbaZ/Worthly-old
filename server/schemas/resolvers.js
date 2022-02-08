@@ -64,7 +64,7 @@ const resolvers = {
         return await User.findOneAndUpdate(
             {_id: context.User._id},
             {$push: { savedItems: args}},
-            { new: true, runValidators: true})
+            { new: true})
             .then (result => {
                 return{result}
             })
@@ -87,7 +87,7 @@ catch (err) {
           { new: true});
           return user;      
   }
-  throw new AuthenticationError('Please login to delete a book!');
+  throw new AuthenticationError('Please login to delete a item!');
  },  
 },
 };
