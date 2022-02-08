@@ -25,7 +25,7 @@ const SearchItemsForm = () => {
     // create state for holding returned eBay api data
     const [searchedItems, setSearcheditems] = useState({});
     // create state for holding our search field data
-    const [searchInput, setSearchInput] = useState({keywords: '', itemName: '', year: '', userPaid: 0});
+    const [searchInput, setSearchInput] = useState({ itemName: '', userPaid: 0});
   
     // create state to hold saved itemId values
     const [savedItemIds, setsavedItemIds] = useState(getSavedItemIds());
@@ -92,10 +92,13 @@ const SearchItemsForm = () => {
     const percentage = () => {
       let ave = averagePrice()
 
-      let difference = (ave - searchInput.userPaid)
+      let percent = 0;
 
-      let percent = ((difference/ave)*100).toFixed(1);
-        return percent
+      //If price increase
+
+      let difference = (ave - searchInput.userPaid)
+      percent = ((difference/searchInput.userPaid)*100).toFixed(1);
+      return percent
     };
 
     const profit = () => {
@@ -120,10 +123,9 @@ const SearchItemsForm = () => {
 
       setSearchInput({
       //Reset all fields
-      keywords: '',
-      year: '',
+
       itemName: '',
-      //userPaid: 0,
+      userPaid: 0,
     });
     } catch (err) {
       console.error(err);
@@ -236,13 +238,15 @@ return (
         </h4>
 
         <p>
+          Purchase Price: ${searchedItems.purchasePrice}
+        </p>
+
+        <p>
         {searchedItems.price
             ? `Estimated Sale Price: $${searchedItems.price}`
             : null}
         </p>
 
-
-          
         <p >
         {searchedItems.profit
             ? `Profit: ${searchedItems.profit <= 0 ? ' -' : ' +'} $${searchedItems.profit}  `
@@ -254,12 +258,9 @@ return (
 
         {Auth.loggedIn() && (
             <Button
-            
-            disabled={savedItemIds?.some((savedItemId) => savedItemId === content.itemId)}
             onClick={() => handleSaveItem()}>
-              {savedItemIds?.some((savedItemId) => savedItemId === content.itemId)
-                        ? 'This item is already tracked!'
-                        : 'Track item!'}
+              {/*Add local storage check for itemId*/}
+                Track Item
             </Button>          
         )}
         </TextBlock>

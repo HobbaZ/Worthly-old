@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
-import { DELETE_ITEM } from '../utils/mutations';
+import { DELETE_ITEM, EDIT_ITEM } from '../utils/mutations';
 
 import { Button, Container, Image, ResultsContainer, ImageBlock, TextBlock } from '../styles/GenericStyles';
 
@@ -11,7 +11,13 @@ import { removeItemId } from '../utils/localStorage';
 
 const content = JSON.parse(localStorage.getItem('saved_items'));
 
+if (content) {
   console.log(content)
+  }
+
+if (!content) {
+  console.log('no content')
+}
 
 const netWorth = () => {
   let total = 0;
@@ -24,14 +30,37 @@ const netWorth = () => {
   return total.toFixed(2);
   };
 
+  //Find highest and lowest profits in array
+  const sort = () => {
+    const sortArray = [];
+
+    let loss = 0;
+    let most = 0;
+
+    for (let index = 0; index < content.length; index++) {
+      let calcProfit = content[index].profit;
+      sortArray.push(calcProfit);
+      sortArray.sort(function(a, b){return a - b});
+
+      most = Math.max(...sortArray)
+
+      if (Math.min(...sortArray) <=0 ) {
+        loss = Math.min(...sortArray)
+      } else {
+        loss = 0;
+      }
+      
+      
+    }
+    return [ most, loss ]
+  };
+
 const SavedItems = () => {
   const { loading, data } = useQuery(QUERY_ME);
   const userData = data?.me || [];
 
   //delete mutation
   const [ deleteItem ] = useMutation(DELETE_ITEM);
-
-  console.log("Current records in db: ", content.length)
 
   // create function that accepts the item's id value deletes from the database
   const handleDeleteItem = async (itemId) => {
@@ -82,6 +111,9 @@ const SavedItems = () => {
                 <TextBlock>
                   <h2>{item.itemName}</h2>
                   <p>Purchase Price: ${item.purchasePrice}</p>
+
+                  {/*Edit purchase price field here*/}
+
                   <p>Average Sale Price: ${item.price}</p>
 
                   <p >
@@ -107,7 +139,9 @@ const SavedItems = () => {
                 <h1> Total Stuff Networth</h1>
                 <h4>${netWorth()}</h4>
 
-                <h5>Highest mover: </h5>
+                <h5>Highest profit: ${sort()[0]}</h5>
+
+                <h5>Highest loss: ${sort()[1]}</h5>
 
             </Container>
       </div>
