@@ -61,7 +61,7 @@ const SavedItems = () => {
 
 
   // create function that accepts the item's id value deletes from the database
-  const handleDeleteItem = async (_id) => {
+  const handleDeleteItem = async (_id, index) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -69,14 +69,17 @@ const SavedItems = () => {
     }
 
     try {
-      //pass in user data object as argument, pass in itemId variable to deleteitem
+      //pass in user data object as argument, pass in _Id variable to deleteitem
       await deleteItem({
-        variables: { _id},
+        variables: { _id: _id},
       })
 
-      removeItemId(_id);
+      console.log("item successfully deleted", _id)
+      window.location.reload();
+
+      //removeItemId(_id);
     } catch (err) {
-      console.error(err);
+      console.error("Error deleting item", err);
     }
   };
 
@@ -127,7 +130,7 @@ const SavedItems = () => {
                   
                   </TextBlock>
 
-                  <Button onClick={() => handleDeleteItem()}>
+                  <Button onClick={() => handleDeleteItem(item._id)}>
                     Delete
                   </Button> 
               </ResultsContainer>

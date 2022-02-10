@@ -141,11 +141,11 @@ const SearchItemsForm = () => {
         variables: {item: itemToSave },
         
       });
-
+      window.location.replace("/saved-stuff");
       // if item successfully saves to user's account, save item to state
 
-      setsavedItemIds([...savedItemIds, itemToSave.item]);
-      console.log('item successfully saved', setsavedItemIds())
+      //setsavedItemIds([...savedItemIds, itemToSave]);
+      console.log('item successfully saved', itemToSave)
 
     } catch (err) {
       console.error(err);

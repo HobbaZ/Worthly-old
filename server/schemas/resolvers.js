@@ -5,12 +5,12 @@ const { signToken } = require('../utils/auth');
 const resolvers = {
   Query: {
     user: async (parent, { username }) => {
-      return User.findOne({ username });
+      return User.findOne({ username }).populate("savedItems");
     },
 
     me: async (parent, args, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id });
+        return User.findOne({ _id: context.user._id }).populate("savedItems");
       }
       throw new AuthenticationError('You need to be logged in!');
     },
@@ -78,11 +78,11 @@ const resolvers = {
 },
 
     // Delete item if logged in
-    deleteItem: async (parent, {_id}, context) => {
+    deleteItem: async (parent, itemId, context) => {
       if (context.user) {
       return await User.findOneAndUpdate(
           { _id: context.user._id},
-          {$pull: { savedItems: {_id: _id}}},
+          {$pull: { savedItems: {_id: itemId}}},
           { new: true});   
   }
   throw new AuthenticationError('Please login to delete a item!');

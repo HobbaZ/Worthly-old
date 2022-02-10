@@ -31,7 +31,6 @@ mutation saveItem($item: itemInput!) {
       username
       email
       savedItems{ 
-                  _id
                   purchasePrice
                   price
                   itemName
@@ -53,7 +52,6 @@ mutation editItem($_id: ID) {
       username
       email
       savedItems{ 
-                  _id
                   purchasePrice
                   price
                   itemName
@@ -75,7 +73,6 @@ export const DELETE_ITEM = gql`
         username
         email
         savedItems{ 
-                    _id
                     purchasePrice
                     price
                     itemName

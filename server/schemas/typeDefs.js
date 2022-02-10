@@ -31,7 +31,6 @@ const typeDefs = gql`
   }
 
   input itemInput {
-    _id: ID
     itemImages: String
     itemName: String
     purchasePrice: Float
