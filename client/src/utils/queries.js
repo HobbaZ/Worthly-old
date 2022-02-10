@@ -18,20 +18,17 @@ export const QUERY_ME = gql`
       username
       email
       savedItems{ 
-        itemId
-        purchasePrice
-        price
-        itemName
-        description
-        itemImages
-        saleQuantity
-        postLinks
-        purchasePrice
-        quantity
-        averageSellingPrice
-        highestSellingPrice
-        lowestSellingPrice
-      }
+                  _id
+                  purchasePrice
+                  price
+                  itemName
+                  percent
+                  profit
+                  quantity
+                  itemImages
+                  purchasePrice
+                  quantity
+                }
     }
   }
 `;

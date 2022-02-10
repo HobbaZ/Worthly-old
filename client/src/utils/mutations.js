@@ -28,64 +28,64 @@ export const SAVE_ITEM = gql`
 mutation saveItem($item: itemInput!) {
   saveItem(item: $item) {
       _id
+      username
+      email
       savedItems{ 
-                  itemId
+                  _id
                   purchasePrice
                   price
                   itemName
                   percent
-                  description
+                  profit
+                  quantity
                   itemImages
-                  saleQuantity
-                  postLinks
                   purchasePrice
                   quantity
-                  averageSellingPrice
-                  highestSellingPrice
-                  lowestSellingPrice
                 }
   }
 }
 `;
 
 export const EDIT_ITEM = gql`
-mutation editItem($itemId: String!) {
-  editItem(itemId: $itemId) {
+mutation editItem($_id: ID) {
+  editItem(_id: $_id) {
       _id
+      username
+      email
       savedItems{ 
-                  itemId
+                  _id
+                  purchasePrice
+                  price
                   itemName
-                  description
+                  percent
+                  profit
+                  quantity
                   itemImages
-                  saleQuantity
-                  postLinks
                   purchasePrice
                   quantity
-                  averageSellingPrice
-                  highestSellingPrice
-                  lowestSellingPrice
                 }
   }
 }
 `;
 
 export const DELETE_ITEM = gql`
-  mutation deleteItem($itemId: String!) {
-    deleteItem(item: $itemId) {
+  mutation deleteItem($_id: ID) {
+    deleteItem(_id: $_id) {
         _id
+        username
+        email
         savedItems{ 
-                    itemId
+                    _id
+                    purchasePrice
+                    price
                     itemName
-                    description
+                    percent
+                    profit
+                    quantity
                     itemImages
-                    saleQuantity
-                    postLinks
                     purchasePrice
                     quantity
-                    averageSellingPrice
-                    highestSellingPrice
-                    lowestSellingPrice
                   }
     }
-  }
+}
 `;

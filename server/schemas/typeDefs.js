@@ -5,7 +5,6 @@ const typeDefs = gql`
     _id: ID
     username: String!
     email: String!
-    networth: Float
     savedItems: [Item]
   }
 
@@ -21,37 +20,25 @@ const typeDefs = gql`
   }
 
   type Item {
-    itemId: String,
-    description: String
-    itemImages: [String]
-    itemName: String
-    purchasePrice: Float
-    price: Float
-    profit: Float
-    quantity: Int
-    saleQuantity: Int
-    percent: Float
-    postLinks: String
-    highestSellingPrice: Int
-    lowestSellingPrice: Int
-    averageSellingPrice: Int
+    _id: ID!
+    itemImages: String!
+    itemName: String!
+    purchasePrice: Float!
+    price: Float!
+    profit: Float!
+    quantity: Int!
+    percent: Float!
   }
 
   input itemInput {
-    itemId: String
-    description: String
-    itemImages: [String]
+    _id: ID
+    itemImages: String
     itemName: String
     purchasePrice: Float
     price: Float
     percent: Float
     profit: Float
     quantity: Int
-    saleQuantity: Int
-    postLinks: String
-    highestSellingPrice: Int
-    lowestSellingPrice: Int
-    averageSellingPrice: Int
   }
 
   type Mutation {
@@ -59,8 +46,9 @@ const typeDefs = gql`
     updateUser(username: String!, email: String!): Auth
     login(email: String!, password: String!): Auth
     saveItem(item: itemInput): User
-    deleteItem(itemId: String!): User 
-    updateItem(itemId: String!): User 
+
+    deleteItem(_id: ID): User 
+    updateItem(_id: ID): User 
   }
 `;
 

@@ -3,19 +3,10 @@ const { Schema } = require('mongoose');
 //Subdocument schema
 const itemSchema = new Schema({
 
-    itemId: {
-        type: Number,
-    },
-
     itemName: {
         type: String,
         required: true,
     },
-
-    description: {
-        type: String,
-        required: true,
-      },
 
       purchasePrice: {
         type: Number,
@@ -27,39 +18,26 @@ const itemSchema = new Schema({
         required: true,
       },
 
-      saleQuantity: {
+      itemImages: {
+        type: String,
+        required: true,
+      },
+
+      price: {
         type: Number,
         required: true,
       },
 
-      postLinks: [
-          {
-          type: String,
-      },
-    ],
-
-      highestSellingPrice: {
+      percent: {
         type: Number,
         required: true,
       },
 
-      lowestSellingPrice: {
+      profit: {
         type: Number,
         required: true,
       },
 
-      averageSellingPrice: {
-        type: Number,
-        required: true,
-      },
-
-      itemImages: [
-          {
-              type: String,
-          }
-      ],
     });
-
-    
 
     module.exports = itemSchema;

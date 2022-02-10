@@ -11,49 +11,9 @@ import { removeItemId } from '../utils/localStorage';
 
 const content = JSON.parse(localStorage.getItem('saved_items'));
 
-if (content) {
-  console.log(content)
-  }
-
 if (!content) {
   console.log('no content')
 }
-
-const netWorth = () => {
-  let total = 0;
-
-  for (let index = 0; index < content.length; index++) {
-    let calcProfit = content[index].profit;
-    total = total+parseFloat(calcProfit);
-  }
-  
-  return total.toFixed(2);
-  };
-
-  //Find highest and lowest profits in array
-  const sort = () => {
-    const sortArray = [];
-
-    let loss = 0;
-    let most = 0;
-
-    for (let index = 0; index < content.length; index++) {
-      let calcProfit = content[index].profit;
-      sortArray.push(calcProfit);
-      sortArray.sort(function(a, b){return a - b});
-
-      most = Math.max(...sortArray)
-
-      if (Math.min(...sortArray) <=0 ) {
-        loss = Math.min(...sortArray)
-      } else {
-        loss = 0;
-      }
-      
-      
-    }
-    return [ most, loss ]
-  };
 
 const SavedItems = () => {
   const { loading, data } = useQuery(QUERY_ME);
@@ -62,8 +22,46 @@ const SavedItems = () => {
   //delete mutation
   const [ deleteItem ] = useMutation(DELETE_ITEM);
 
+  //Edit mutation
+  const [ updateItem ] = useMutation(EDIT_ITEM)
+
+  const netWorth = () => {
+    let total = 0;
+  
+    for (let index = 0; index < userData.savedItems.length; index++) {
+      let calcProfit = userData.savedItems[index].profit;
+      total = total+parseFloat(calcProfit);
+    }
+    
+    return total.toFixed(2);
+    };
+  
+    //Find highest and lowest profits in array
+    const sort = () => {
+      const sortArray = [];
+  
+      let loss = 0;
+      let most = 0;
+  
+      for (let index = 0; index < userData.savedItems.length; index++) {
+        let calcProfit = userData.savedItems[index].profit;
+        sortArray.push(calcProfit);
+        sortArray.sort(function(a, b){return a - b});
+  
+        most = Math.max(...sortArray)
+  
+        if (Math.min(...sortArray) <=0 ) {
+          loss = Math.min(...sortArray)
+        } else {
+          loss = null;
+        }
+      }
+      return [ most, loss ]
+    };
+
+
   // create function that accepts the item's id value deletes from the database
-  const handleDeleteItem = async (itemId) => {
+  const handleDeleteItem = async (_id) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -73,10 +71,10 @@ const SavedItems = () => {
     try {
       //pass in user data object as argument, pass in itemId variable to deleteitem
       await deleteItem({
-        variables: { itemId: itemId },
+        variables: { _id},
       })
 
-      removeItemId(itemId);
+      removeItemId(_id);
     } catch (err) {
       console.error(err);
     }
@@ -94,15 +92,17 @@ const SavedItems = () => {
       </div>
       <div>
       <h2>
-          {content?.length
-            ? `Viewing ${content.length} saved ${content.length === 1 ? 'item' : 'items'}:`
+          {userData.savedItems?.length
+            ? `Viewing ${userData.savedItems.length} saved ${userData.savedItems.length === 1 ? 'item' : 'items'}:`
             : 'You aren\'t tracking anything yet!'}
         </h2>
  
-          {content?.map((item) => {
+          {userData.savedItems?.map((item) => {
             return (
               <ResultsContainer>
-              <div key={item.itemId}></div>
+              <div key={item._id}></div>
+
+              <p>{item._id}</p>
 
               <ImageBlock> 
                 {item.itemImages ? <Image src={item.itemImages} alt={`Image for ${item.itemName}`} variant='top'></Image> : null}

@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User } = require('../models');
+const { User} = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -43,12 +43,10 @@ const resolvers = {
     //Update item if logged in
     updateItem: async (parent, args, context) => {
 
-      const createItem = await item.Create({args})
-
       if (context.user) {
         return await User.findOneAndUpdate(
             {_id: context.user._id},
-            {$push: { savedBooks: createItem}},
+            {$push: { savedItems: args.item}},
             { new: true})
             .then (result => {
                 return{result}
@@ -62,33 +60,30 @@ const resolvers = {
 
     //Save item if logged in
     saveItem: async (parent, args, context) => {
-      try {
         if (context.user) {
+
+          console.log("These are the arguments passed \n", args)
         return await User.findOneAndUpdate(
             {_id: context.user._id},
-            {$push: { savedItems: args}},
+            {$push: { savedItems: args.item }},
             { new: true})
             .then (result => {
-                return{result}
-            })
-            .catch (err => {
-                console.error(err)
-            })
-    }
-    throw new AuthenticationError('Please login to add a book!');
-}
-catch (err) {
-    console.log(err)
-}},
+              console.log("This is the result", result)
+          })
+          .catch (err => {
+              console.error(err)
+          })   
+        }
+    throw new AuthenticationError('Please login to add an item!');
+},
 
     // Delete item if logged in
-    deleteItem: async (parent, args, context) => {
+    deleteItem: async (parent, {_id}, context) => {
       if (context.user) {
-      const user = await User.findOneAndUpdate(
+      return await User.findOneAndUpdate(
           { _id: context.user._id},
-          {$pull: { savedItems: args}},
-          { new: true});
-          return user;      
+          {$pull: { savedItems: {_id: _id}}},
+          { new: true});   
   }
   throw new AuthenticationError('Please login to delete a item!');
  },  

@@ -15,15 +15,15 @@ import { saveItemIds, getSavedItemIds } from '../utils/localStorage';
 const apiKey = process.env.REACT_APP_API_KEY;
 
 //Generate unique ids with crypto
-const crypto = require("crypto");
-const id = crypto.randomBytes(16).toString("hex");
+//const crypto = require("crypto");
+//const id = crypto.randomBytes(16).toString("hex");
 
 //Use SerpApi ebay api
 const SerpApi = require('google-search-results-nodejs');
 
 const SearchItemsForm = () => {
     // create state for holding returned eBay api data
-    const [searchedItems, setSearcheditems] = useState({});
+    const [searchedItems, setSearcheditems] = useState([]);
     // create state for holding our search field data
     const [searchInput, setSearchInput] = useState({ itemName: '', userPaid: 0});
   
@@ -78,13 +78,8 @@ const SearchItemsForm = () => {
       let priceMinusPostage = organic_results[index]?.price?.extracted - 9 || organic_results[index]?.shipping?.extracted - 15 || organic_results[index]?.price?.to?.extracted - 9  //Guestimate of average postage
       total = total+parseFloat(priceMinusPostage);
 
-      console.log("Data Received:", organic_results[index])
     }
-    average = (total/organic_results.length).toFixed(2);
-
-    console.log("Average is:", average)
-    console.log("Total is:", total)
-    
+    average = (total/organic_results.length).toFixed(2);    
     return average;
     };
 
@@ -104,13 +99,11 @@ const SearchItemsForm = () => {
     const profit = () => {
       let ave = averagePrice()
       let difference = (ave - searchInput.userPaid).toFixed(2)
-      console.log('Total profit: $', difference)
       return difference;
     }
 
     const searchData = () => ({
       itemName: organic_results[0]?.title,
-      itemId: id,
       quantity: organic_results.length,
       itemImages: organic_results[0]?.thumbnail || [],
       price: parseFloat(averagePrice()),
@@ -151,8 +144,8 @@ const SearchItemsForm = () => {
 
       // if item successfully saves to user's account, save item to state
 
-      setsavedItemIds([...savedItemIds, itemToSave]);
-      console.log('item saved', setsavedItemIds())
+      setsavedItemIds([...savedItemIds, itemToSave.item]);
+      console.log('item successfully saved', setsavedItemIds())
 
     } catch (err) {
       console.error(err);
@@ -164,8 +157,6 @@ const SearchItemsForm = () => {
   } else {
     <p style={{color: 'green'}}></p>
   }
-
-  const content = JSON.parse(localStorage.getItem('saved_items'));
 
 return (
     <>
