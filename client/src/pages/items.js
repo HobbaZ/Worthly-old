@@ -89,8 +89,6 @@ const SearchItemsForm = () => {
 
       let percent = 0;
 
-      //If price increase
-
       let difference = (ave - searchInput.userPaid)
       percent = ((difference/searchInput.userPaid)*100).toFixed(1);
       return percent
@@ -168,8 +166,6 @@ return (
       </div>
 
           <Form onSubmit={handleFormSubmit}>
-
-            {/*Keyword Searchbar*/}
 
               <FormGroup>
               <Label>Item Name</Label>

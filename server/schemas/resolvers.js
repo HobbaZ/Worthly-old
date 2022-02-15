@@ -41,13 +41,17 @@ const resolvers = {
     },
 
     //Update item if logged in
-    updateItem: async (parent, args, context) => {
+    updateItem: async (parent, itemToUpdate, fieldUpdated, context) => {
 
       if (context.user) {
-        return await User.findOneAndUpdate(
-            {_id: context.user._id},
-            {$push: { savedItems: args.item}},
-            { new: true})
+        const user = await User.findOneAndUpdate(
+            {_id: context.user._id}
+        ),
+            itemToUpdate = userData.savedItems._id,
+            fieldUpdated = { purchasePrice, itemImages }
+            itemToUpdate.set(fieldUpdated)
+
+            return user
             .then (result => {
                 return{result}
             })

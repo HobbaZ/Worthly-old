@@ -1,41 +1,79 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
-import { DELETE_ITEM, EDIT_ITEM } from '../utils/mutations';
+import { DELETE_ITEM, UPDATE_ITEM } from '../utils/mutations';
 
 import { Button, Container, Image, ResultsContainer, ImageBlock, TextBlock } from '../styles/GenericStyles';
 
+import { Form, FormField, Label, FormGroup } from '../styles/FormStyle';
+
 import Auth from '../utils/auth';
-import { removeItemId } from '../utils/localStorage';
 
 const content = JSON.parse(localStorage.getItem('saved_items'));
-
-if (!content) {
-  console.log('no content')
-}
 
 const SavedItems = () => {
   const { loading, data } = useQuery(QUERY_ME);
   const userData = data?.me || [];
 
+  if (!userData) {
+    window.location.replace("/")
+  }
+
   //delete mutation
   const [ deleteItem ] = useMutation(DELETE_ITEM);
 
   //Edit mutation
-  const [ updateItem ] = useMutation(EDIT_ITEM)
+  const [ updateItem ] = useMutation(UPDATE_ITEM)
 
+ //Form Fields
+  const [itemUpdateInput, setItemUpdateInput] = useState({ itemImage: "", userPaid: 0});
+
+  //Search form handler
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    setItemUpdateInput({ ...itemUpdateInput, [name]: value });
+  };
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+
+    
+    if (!itemUpdateInput) {
+      return false;
+    }
+
+    try {
+
+      setItemUpdateInput({
+        //Reset all fields
+  
+        itemImage: "",
+        userPaid: "",
+      });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+  //_____________NETWORTH CALCULATION_____________________
+
+  //Calculate networth by adding all profits from the individual items listed
   const netWorth = () => {
     let total = 0;
+
+    
   
-    for (let index = 0; index < userData.savedItems.length; index++) {
+    for (let index = 0; index < userData.savedItems?.length; index++) {
       let calcProfit = userData.savedItems[index].profit;
-      total = total+parseFloat(calcProfit);
+      total = total + parseFloat(calcProfit);
     }
     
     return total.toFixed(2);
     };
   
+    //_____________HIGHEST/LOWEST VALUE ITEMS CALCULATION_____________________
+
     //Find highest and lowest profits in array
     const sort = () => {
       const sortArray = [];
@@ -43,7 +81,7 @@ const SavedItems = () => {
       let loss = 0;
       let most = 0;
   
-      for (let index = 0; index < userData.savedItems.length; index++) {
+      for (let index = 0; index < userData.savedItems?.length; index++) {
         let calcProfit = userData.savedItems[index].profit;
         sortArray.push(calcProfit);
         sortArray.sort(function(a, b){return a - b});
@@ -59,9 +97,10 @@ const SavedItems = () => {
       return [ most, loss ]
     };
 
+  //_____________DELETE FUNCTION FOR DELETE BUTTON_____________________
 
-  // create function that accepts the item's id value deletes from the database
-  const handleDeleteItem = async (_id, index) => {
+  // Item's id value deletes from the database
+  const handleDeleteItem = async (_id) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -74,7 +113,7 @@ const SavedItems = () => {
         variables: { _id: _id},
       })
 
-      console.log("item successfully deleted", _id)
+      console.log("item successfully deleted")
       window.location.reload();
 
       //removeItemId(_id);
@@ -82,6 +121,32 @@ const SavedItems = () => {
       console.error("Error deleting item", err);
     }
   };
+
+  //_____________UPDATE FUNCTION FOR EDIT BUTTON_____________________
+
+  // Item's id value and updates from the database
+  const handleUpdateItem = async (_id, item) => {
+    const token = Auth.loggedIn() ? Auth.getToken() : null;
+
+    if (!token) {
+      return false;
+    }
+
+    try {
+      //pass in user data object as argument, pass in _Id variable to updateitem
+      await updateItem({
+        variables: { _id: _id, item: item},
+      })
+
+      console.log("item successfully updated", _id, item)
+      window.location.reload();
+
+    } catch (err) {
+      console.error("Error updating item", err);
+    }
+  };
+
+  //_____________RENDERING STUFF_____________________
 
   // if data isn't here yet, say so
   if (loading) {
@@ -116,6 +181,30 @@ const SavedItems = () => {
                   <p>Purchase Price: ${item.purchasePrice}</p>
 
                   {/*Edit purchase price field here*/}
+                  <Form onSubmit={handleFormSubmit}>
+
+                  <FormGroup>
+                    <Label>Replace Price</Label>
+                    <FormField
+                      type='text'
+                      placeholder= "Purchase Price"
+                      name='userPaid'
+                      onChange={handleInputChange}
+                      value={itemUpdateInput.userPaid}>
+                    </FormField>
+                  </FormGroup>
+
+                    <FormGroup>
+                    <Label>Replace Item Image</Label>
+                    <FormField
+                      type='text'
+                      placeholder= "Image path"
+                      name='itemImage'
+                      onChange={handleInputChange}
+                      value={itemUpdateInput.itemImage}>
+                    </FormField>
+                  </FormGroup>
+                  </Form>
 
                   <p>Average Sale Price: ${item.price}</p>
 
@@ -132,6 +221,10 @@ const SavedItems = () => {
 
                   <Button onClick={() => handleDeleteItem(item._id)}>
                     Delete
+                  </Button> 
+
+                  <Button onClick={() => handleUpdateItem(item._id)}>
+                    Edit
                   </Button> 
               </ResultsContainer>
             );

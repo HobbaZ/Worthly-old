@@ -24,6 +24,17 @@ export const ADD_USER = gql`
   }
 `;
 
+export const UPDATE_USER = gql`
+mutation updateIser($user: userInput) {
+  updateUser(user: $user) {
+    username
+    email
+    password
+  }
+}
+
+`;
+
 export const SAVE_ITEM = gql`
 mutation saveItem($item: itemInput!) {
   saveItem(item: $item) {
@@ -38,16 +49,15 @@ mutation saveItem($item: itemInput!) {
                   profit
                   quantity
                   itemImages
-                  purchasePrice
                   quantity
                 }
   }
 }
 `;
 
-export const EDIT_ITEM = gql`
-mutation editItem($_id: ID) {
-  editItem(_id: $_id) {
+export const UPDATE_ITEM = gql`
+mutation updateItem($item: updateItem) {
+  updateItem(item: $item) {
       _id
       username
       email
@@ -59,7 +69,6 @@ mutation editItem($_id: ID) {
                   profit
                   quantity
                   itemImages
-                  purchasePrice
                   quantity
                 }
   }

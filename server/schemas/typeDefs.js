@@ -8,6 +8,16 @@ const typeDefs = gql`
     savedItems: [Item]
   }
 
+  input userInput {
+    username: String
+    email: String
+  }
+
+  input updateItem {
+    itemImages: String
+    purchasePrice: Float
+  }
+
   type Auth {
     token: ID!
     user: User
@@ -42,12 +52,16 @@ const typeDefs = gql`
 
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
-    updateUser(username: String!, email: String!): Auth
+
+    updateUser(user: userInput): User
+
     login(email: String!, password: String!): Auth
+
     saveItem(item: itemInput): User
 
     deleteItem(_id: ID): User 
-    updateItem(_id: ID): User 
+
+    updateItem(_id: ID, item: updateItem): User 
   }
 `;
 
