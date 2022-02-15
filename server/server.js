@@ -9,6 +9,8 @@ const db = require('./config/connection');
 
 const cors = require('cors');
 
+const apiKey = process.env.API_KEY;
+
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -22,19 +24,19 @@ const server = new ApolloServer({
 server.applyMiddleware({ app });
 
 app.use(express.urlencoded({ extended: false }));
-//app.use(cors);
+app.use(cors);
 app.use(express.json());
-app.use(function(req, res) {
+app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000/");
-  res.header("mode", "cors");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 }
 
-app.get('*', cors(), (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 

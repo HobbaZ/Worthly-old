@@ -20,7 +20,7 @@ Collates estimated values of your various items so you can keep track of them an
 How to install polyfills and modify webpack.config for fallback functions, learnt more about React and incorporating styled components
 
 ## Deployment
-Currently only running on localhost, please clone the git repo to your computer, install dependencies and start the development server to run it on your machine. The site needs CORS, the current workaround is Installing the Moesif CORS extension to Chrome and turning it on while using the site. You will also need an API key from (https://serpapi.com/)[https://serpapi.com/] and need to create a .env file inside the client folder with your api key pasted inside it
+Currently only running on localhost, please clone the git repo to your computer, install dependencies and start the development server to run it on your machine. You will need an API key from (https://serpapi.com/)[https://serpapi.com/] and need to create a .env file inside the client folder with your api key pasted inside it.
 
 ![example .env file](client/images/envexample.PNG)
 

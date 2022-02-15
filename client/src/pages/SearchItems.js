@@ -14,10 +14,6 @@ import { saveItemIds, getSavedItemIds } from '../utils/localStorage';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
-//Generate unique ids with crypto
-//const crypto = require("crypto");
-//const id = crypto.randomBytes(16).toString("hex");
-
 //Use SerpApi ebay api
 const SerpApi = require('google-search-results-nodejs');
 
@@ -28,7 +24,7 @@ const SearchItemsForm = () => {
     const [searchInput, setSearchInput] = useState({ itemName: '', userPaid: 0});
   
     // create state to hold saved itemId values
-    const [savedItemIds, setsavedItemIds] = useState(getSavedItemIds());
+    const [savedItemIds] = useState(getSavedItemIds());
 
     // Set up our mutation with an option to handle errors, put in parent form function
     const [saveItem ] = useMutation(SAVE_ITEM);
@@ -52,10 +48,11 @@ const SearchItemsForm = () => {
       return false;
     }
 
-    const search = new SerpApi.GoogleSearch(apiKey);
+    const search = new SerpApi.GoogleSearch(apiKey)
 
     try {
-      const response = await fetch(`https://serpapi.com/search?engine=ebay&ebay_domain=ebay.com.au&_nkw=${searchInput.itemName}&source=nodejs&output=json&api_key=${apiKey}`)
+
+      const response = await fetch(`https://cors-hobbaz.herokuapp.com/https://serpapi.com/search?engine=ebay&ebay_domain=ebay.com.au&_nkw=${searchInput.itemName}&source=nodejs&output=json&api_key=${apiKey}`)
 
       if (!response.ok) {
         console.log(response);

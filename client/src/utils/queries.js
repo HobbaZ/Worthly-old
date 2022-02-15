@@ -11,6 +11,14 @@ export const QUERY_USER = gql`
   }
 `;
 
+/*export const GET_API = gql`
+  query api() {
+    api() {
+      item
+    }
+  }
+`*/
+
 export const QUERY_ME = gql`
   query me {
     me {
