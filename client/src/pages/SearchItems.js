@@ -94,6 +94,7 @@ const SearchItemsForm = () => {
     const profit = () => {
       let ave = averagePrice()
       let difference = (ave - searchInput.userPaid).toFixed(2)
+
       return difference;
     }
 
@@ -148,9 +149,9 @@ const SearchItemsForm = () => {
   };
 
   if (searchedItems.profit <= 0) {
-    <p style={{color: 'red'}}></p>
+    <p styled={{color: 'red'}}></p>
   } else {
-    <p style={{color: 'green'}}></p>
+    <p styled={{color: 'green'}}></p>
   }
 
 return (

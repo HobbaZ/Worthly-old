@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
 import { DELETE_ITEM, UPDATE_ITEM } from '../utils/mutations';
 
-import { Button, Container, Image, ResultsContainer, ImageBlock, TextBlock } from '../styles/GenericStyles';
+import { Button, Container, Image, ResultsContainer, ImageBlock, TextBlock, ListText, ListBlock, Positive } from '../styles/GenericStyles';
 
-import { Form, FormField, Label, FormGroup } from '../styles/FormStyle';
+//import { Form, FormField, Label, FormGroup } from '../styles/FormStyle';
 
 import Auth from '../utils/auth';
-
-const content = JSON.parse(localStorage.getItem('saved_items'));
 
 const SavedItems = () => {
   const { loading, data } = useQuery(QUERY_ME);
@@ -27,15 +25,15 @@ const SavedItems = () => {
   const [ updateItem ] = useMutation(UPDATE_ITEM)
 
  //Form Fields
-  const [itemUpdateInput, setItemUpdateInput] = useState({ itemImage: "", userPaid: 0});
+  //const [itemUpdateInput, setItemUpdateInput] = useState({ itemImage: "", userPaid: 0});
 
   //Search form handler
-  const handleInputChange = event => {
+  /*const handleInputChange = event => {
     const { name, value } = event.target;
     setItemUpdateInput({ ...itemUpdateInput, [name]: value });
-  };
+  };*/
 
-  const handleFormSubmit = async (event) => {
+  /*const handleFormSubmit = async (event) => {
     event.preventDefault();
 
     
@@ -44,7 +42,6 @@ const SavedItems = () => {
     }
 
     try {
-
       setItemUpdateInput({
         //Reset all fields
   
@@ -54,7 +51,7 @@ const SavedItems = () => {
       } catch (err) {
         console.error(err);
       }
-    };
+    };*/
 
   //_____________NETWORTH CALCULATION_____________________
 
@@ -91,7 +88,7 @@ const SavedItems = () => {
         if (Math.min(...sortArray) <=0 ) {
           loss = Math.min(...sortArray)
         } else {
-          loss = null;
+          loss = 0;
         }
       }
       return [ most, loss ]
@@ -167,21 +164,23 @@ const SavedItems = () => {
  
           {userData.savedItems?.map((item) => {
             return (
+
               <ResultsContainer>
               <div key={item._id}></div>
-
-              <p>{item._id}</p>
 
               <ImageBlock> 
                 {item.itemImages ? <Image src={item.itemImages} alt={`Image for ${item.itemName}`} variant='top'></Image> : null}
                 </ImageBlock>
 
                 <TextBlock>
+                  
                   <h2>{item.itemName}</h2>
-                  <p>Purchase Price: ${item.purchasePrice}</p>
+
+                  <ListBlock>
+                  <ListText>Purchase Price: ${item.purchasePrice}</ListText>
 
                   {/*Edit purchase price field here*/}
-                  <Form onSubmit={handleFormSubmit}>
+                  {/*<Form onSubmit={handleFormSubmit}>
 
                   <FormGroup>
                     <Label>Replace Price</Label>
@@ -204,19 +203,24 @@ const SavedItems = () => {
                       value={itemUpdateInput.itemImage}>
                     </FormField>
                   </FormGroup>
-                  </Form>
+                  </Form>*/}
 
-                  <p>Average Sale Price: ${item.price}</p>
+                  
+                  <ListText>Average Sale Price: ${item.price}</ListText>
 
-                  <p >
-                    {item.profit
-                            ? `Profit: ${item.profit <= 0 ? ' -' : ' +'} $${item.profit}  `
+                  <ListText>Profit:
+
+                  {item.profit
+                            ? `${item.profit <= 0 ? ' -' : ' +'} $${item.profit}  `
                             : null}
 
                   {item.percent
                             ? `(${item.percent <= 0 ?  ' ↓' : ' ↑'} ${item.percent}%)`
-                            : null}</p>
+                            : null}
+                            
+                            </ListText>
                   
+                  </ListBlock>
                   </TextBlock>
 
                   <Button onClick={() => handleDeleteItem(item._id)}>
