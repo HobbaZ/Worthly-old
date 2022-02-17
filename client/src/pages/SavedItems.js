@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
 import { DELETE_ITEM, UPDATE_ITEM } from '../utils/mutations';
 
-import { Button, Container, Image, ResultsContainer, ImageBlock, TextBlock, ListText, ListBlock, Positive } from '../styles/GenericStyles';
+import { Button, Container, Image, ResultsContainer, ImageBlock, TextBlock, ListText, ListBlock } from '../styles/GenericStyles';
 
 //import { Form, FormField, Label, FormGroup } from '../styles/FormStyle';
 
