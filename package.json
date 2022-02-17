@@ -1,7 +1,7 @@
 {
   "name": "Worthly",
   "version": "1.0.0",
-  "description": "",
+  "description": "App that tracks value of your items",
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
