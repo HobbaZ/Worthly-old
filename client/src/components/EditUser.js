@@ -6,8 +6,6 @@ import { EDIT_USER } from '../utils/mutations'
 
 import Auth from '../utils/auth';
 
-import { Form, Alert, Button } from 'react-bootstrap'; //migrate to Styled Components
-
 const EditUserForm = () => {
 
     //Initial form state
@@ -30,7 +28,6 @@ const EditUserForm = () => {
         event.preventDefault();
         console.log(editUserData);
     
-        // check if form has everything (as per react-bootstrap docs)
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
           event.preventDefault();

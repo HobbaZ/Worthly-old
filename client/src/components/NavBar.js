@@ -1,6 +1,5 @@
 import React from 'react';
 import { NavLink, Nav, NavBtnLink } from '../styles/NavbarStyle'
-//import {  Navbar, Container, Modal, Tab } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
 
