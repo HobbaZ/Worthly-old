@@ -1,5 +1,5 @@
 {
-  "name": "Worthly",
+  "name": "worthly",
   "version": "1.0.0",
   "description": "App that tracks value of your items",
   "main": "server/server.js",
